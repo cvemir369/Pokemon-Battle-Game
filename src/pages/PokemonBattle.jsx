@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import chooseRandomPokemon from "../utils/chooseRandomPokemon";
 
 const calculateDamage = (attacker, defender, isSpecial = false) => {
   const level = 50;
@@ -14,45 +15,49 @@ const calculateDamage = (attacker, defender, isSpecial = false) => {
 const PokemonBattle = () => {
   const [battleLog, setBattleLog] = useState([]);
   const [winner, setWinner] = useState(null);
+  const [opponent, setOpponent] = useState(null);
+  const [player, setPlayer] = useState(null);
+  const [isBattleRunning, setIsBattleRunning] = useState(false);
 
-  const pikachu = {
-    name: "Pikachu",
-    hp: 35,
-    attack: 55,
-    defense: 40,
-    specialAttack: 50,
-    specialDefense: 50,
-    speed: 90,
-  };
+  useEffect(() => {
+    const fetchOpponent = async () => {
+      const randomOpponent = await chooseRandomPokemon();
+      setOpponent(randomOpponent);
+    };
 
-  const opponent = {
-    name: "Charmander",
-    hp: 39,
-    attack: 52,
-    defense: 43,
-    specialAttack: 60,
-    specialDefense: 50,
-    speed: 65,
-  };
+    const fetchPlayer = async () => {
+      const randomPlayer = await chooseRandomPokemon();
+      setPlayer(randomPlayer);
+    };
 
-  const simulateBattle = () => {
+    fetchPlayer();
+    fetchOpponent();
+  }, []);
+
+  const simulateBattle = async () => {
+    if (!opponent || !player || isBattleRunning) return;
+
+    setIsBattleRunning(true);
+    setBattleLog([]);
+    setWinner(null);
+
     let log = [];
-    let pikachuHp = pikachu.hp;
+    let playerHp = player.hp;
     let opponentHp = opponent.hp;
 
-    const firstAttacker = pikachu.speed >= opponent.speed ? pikachu : opponent;
-    const secondAttacker = firstAttacker === pikachu ? opponent : pikachu;
+    const firstAttacker = player.speed >= opponent.speed ? player : opponent;
+    const secondAttacker = firstAttacker === player ? opponent : player;
 
     log.push(`${firstAttacker.name} attacks first!`);
 
-    while (pikachuHp > 0 && opponentHp > 0) {
+    while (playerHp > 0 && opponentHp > 0) {
       const damageToSecond = calculateDamage(firstAttacker, secondAttacker);
-      if (secondAttacker === pikachu) {
-        pikachuHp -= damageToSecond;
+      if (secondAttacker === player) {
+        playerHp -= damageToSecond;
         log.push(
           `${firstAttacker.name} deals ${damageToSecond} damage to ${
             secondAttacker.name
-          }. ${secondAttacker.name} has ${Math.max(pikachuHp, 0)} HP left.`
+          }. ${secondAttacker.name} has ${Math.max(playerHp, 0)} HP left.`
         );
       } else {
         opponentHp -= damageToSecond;
@@ -63,15 +68,15 @@ const PokemonBattle = () => {
         );
       }
 
-      if (pikachuHp <= 0 || opponentHp <= 0) break;
+      if (playerHp <= 0 || opponentHp <= 0) break;
 
       const damageToFirst = calculateDamage(secondAttacker, firstAttacker);
-      if (firstAttacker === pikachu) {
-        pikachuHp -= damageToFirst;
+      if (firstAttacker === player) {
+        playerHp -= damageToFirst;
         log.push(
           `${secondAttacker.name} deals ${damageToFirst} damage to ${
             firstAttacker.name
-          }. ${firstAttacker.name} has ${Math.max(pikachuHp, 0)} HP left.`
+          }. ${firstAttacker.name} has ${Math.max(playerHp, 0)} HP left.`
         );
       } else {
         opponentHp -= damageToFirst;
@@ -83,8 +88,24 @@ const PokemonBattle = () => {
       }
     }
 
-    setBattleLog(log);
-    setWinner(pikachuHp > 0 ? pikachu.name : opponent.name);
+    // Add the winner announcement to the log
+    log.push(
+      `Winner: ${
+        playerHp > 0 ? `player's ${player.name}` : `cpu's ${opponent.name}`
+      }!`
+    );
+
+    // Display log messages with a 2-second delay
+    for (let i = 0; i < log.length; i++) {
+      await new Promise((resolve) => setTimeout(resolve, 2000)); // 2-second delay
+      setBattleLog((prevLog) => [...prevLog, log[i]]);
+    }
+
+    // Set the winner after the log is fully displayed
+    setWinner(
+      playerHp > 0 ? `player's ${player.name}` : `cpu's ${opponent.name}`
+    );
+    setIsBattleRunning(false);
   };
 
   return (
@@ -94,9 +115,10 @@ const PokemonBattle = () => {
       </h1>
       <button
         onClick={simulateBattle}
-        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
+        disabled={isBattleRunning}
+        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 disabled:bg-gray-400"
       >
-        Start Battle
+        {isBattleRunning ? "Battle in Progress..." : "Start Battle"}
       </button>
       <div className="mt-4">
         <h2 className="text-xl font-semibold">Battle Log:</h2>
