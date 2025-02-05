@@ -3,9 +3,11 @@ import axios from "axios";
 const BASE_URL = "https://pokeapi.co/api/v2";
 
 const pokemonService = {
-  async getAllPokemons(limit = 9) {
+  async getAllPokemons(limit = 9, offset = 0) {
     try {
-      const response = await axios.get(`${BASE_URL}/pokemon?limit=${limit}`);
+      const response = await axios.get(
+        `${BASE_URL}/pokemon?limit=${limit}&offset=${offset}`
+      );
       if (!response.data) throw new Error("No data received");
       return response.data;
     } catch (error) {
