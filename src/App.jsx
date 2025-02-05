@@ -1,12 +1,18 @@
-import "./App.css";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Header from "./components/Header";
+import Home from "./pages/Home";
+import Leaderboard from "./pages/Leaderboard";
 
-function App() {
+const App = () => {
   return (
-    <>
-      <h1 className="text-3xl font-bold">Tailwind testing</h1>
-      <p className="text-xl font-bold bg-yellow-400">Hi Pokemon! Yellow bg?</p>
-    </>
+    <Router>
+      <Header />
+      <Switch>
+        <Route path="/" exact component={Home} />
+        <Route path="/leaderboard" component={Leaderboard} />
+      </Switch>
+    </Router>
   );
-}
+};
 
 export default App;
