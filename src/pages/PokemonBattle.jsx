@@ -48,6 +48,8 @@ const PokemonBattle = () => {
     const firstAttacker = player.speed >= opponent.speed ? player : opponent;
     const secondAttacker = firstAttacker === player ? opponent : player;
 
+    log.push(`Player: ${player.name} vs Cpu: ${opponent.name}!`);
+
     log.push(`${firstAttacker.name} attacks first!`);
 
     while (playerHp > 0 && opponentHp > 0) {
