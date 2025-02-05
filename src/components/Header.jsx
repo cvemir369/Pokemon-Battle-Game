@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
-    <header className="bg-white mx-10 text-black p-4 flex justify-between items-center">
+    <header className="bg-white mx-10 text-black p-1 flex justify-between items-center">
       <Link to="/">
         <img
           src="/logo.png"
@@ -15,25 +15,25 @@ const Header = () => {
           to="/details"
           className="text-black hover:text-gray-700 font-semibold py-2 px-4"
         >
-          Details Page
+          Pokédex
         </Link>
         <Link
           to="/roster"
           className="text-black hover:text-gray-700 font-semibold py-2 px-4"
         >
-          Roster Page
+          My Roster
         </Link>
         <Link
           to="/battle"
           className="text-black hover:text-gray-700 font-semibold py-2 px-4"
         >
-          Battle Page
+          Battle
         </Link>
         <Link
           to="/leaderboard"
           className="text-black hover:text-gray-700 font-semibold py-2 px-4"
         >
-          Leaderboard Page
+          Leaderboard
         </Link>
       </nav>
       <button className="bg-black hover:bg-slate-700 text-white font-bold py-2 px-4 rounded-none">
