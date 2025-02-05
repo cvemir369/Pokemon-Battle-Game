@@ -2,15 +2,17 @@ import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
-    <header className="bg-white mx-10 text-black p-1 flex justify-between items-center">
-      <Link to="/">
-        <img
-          src="/logo.png"
-          alt="Logo"
-          className="h-16 w-auto object-cover mr-4"
-        />
-      </Link>
-      <nav className="flex-grow flex justify-center space-x-4">
+    <header className="bg-white mx-10 text-black pt-2 pb-1 flex justify-between items-center">
+      <div className="flex itmes-cneter">
+        <Link to="/">
+          <img
+            src="/logo.png"
+            alt="Logo"
+            className="h-14 w-auto object-cover"
+          />
+        </Link>
+      </div>
+      <nav className="flex items-center space-x-8">
         <Link
           to="/details"
           className="text-black hover:text-gray-700 font-semibold py-2 px-4"
@@ -36,9 +38,11 @@ const Header = () => {
           Leaderboard
         </Link>
       </nav>
-      <button className="bg-black hover:bg-slate-700 text-white font-bold py-2 px-4 rounded-none">
-        Play
-      </button>
+      <div className="flex items-center">
+        <button className="bg-black hover:bg-yellow-400 hover:text-black text-white font-bold py-2 px-4 rounded-none">
+          Play
+        </button>
+      </div>
     </header>
   );
 };
