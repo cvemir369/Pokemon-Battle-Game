@@ -3,8 +3,12 @@ import chooseRandomPokemon from "../utils/chooseRandomPokemon";
 
 const calculateDamage = (attacker, defender, isSpecial = false) => {
   const level = 50;
-  const attackStat = isSpecial ? attacker.specialAttack : attacker.attack;
-  const defenseStat = isSpecial ? defender.specialDefense : defender.defense;
+  const attackStat = isSpecial
+    ? attacker.stats[3].base_stat
+    : attacker.stats[1].base_stat;
+  const defenseStat = isSpecial
+    ? defender.stats[4].base_stat
+    : defender.stats[2].base_stat;
   const randomFactor = 0.85 + Math.random() * 0.15;
 
   return Math.floor(
@@ -42,13 +46,14 @@ const PokemonBattle = () => {
     setWinner(null);
 
     let log = [];
-    let playerHp = player.hp;
-    let opponentHp = opponent.hp;
+    let playerHp = player.stats[0].base_stat;
+    let opponentHp = opponent.stats[0].base_stat;
 
-    const firstAttacker = player.speed >= opponent.speed ? player : opponent;
+    const firstAttacker =
+      player.stats[5].base_stat >= opponent.stats[5].base_stat
+        ? player
+        : opponent;
     const secondAttacker = firstAttacker === player ? opponent : player;
-
-    log.push(`Player: ${player.name} vs Cpu: ${opponent.name}!`);
 
     log.push(`${firstAttacker.name} attacks first!`);
 
@@ -57,14 +62,14 @@ const PokemonBattle = () => {
       if (secondAttacker === player) {
         playerHp -= damageToSecond;
         log.push(
-          `${firstAttacker.name} deals ${damageToSecond} damage to ${
+          `🔥 ${firstAttacker.name} deals ${damageToSecond} damage to ${
             secondAttacker.name
           }. ${secondAttacker.name} has ${Math.max(playerHp, 0)} HP left.`
         );
       } else {
         opponentHp -= damageToSecond;
         log.push(
-          `${firstAttacker.name} deals ${damageToSecond} damage to ${
+          `🔥 ${firstAttacker.name} deals ${damageToSecond} damage to ${
             secondAttacker.name
           }. ${secondAttacker.name} has ${Math.max(opponentHp, 0)} HP left.`
         );
@@ -76,14 +81,14 @@ const PokemonBattle = () => {
       if (firstAttacker === player) {
         playerHp -= damageToFirst;
         log.push(
-          `${secondAttacker.name} deals ${damageToFirst} damage to ${
+          `🔥 ${secondAttacker.name} deals ${damageToFirst} damage to ${
             firstAttacker.name
           }. ${firstAttacker.name} has ${Math.max(playerHp, 0)} HP left.`
         );
       } else {
         opponentHp -= damageToFirst;
         log.push(
-          `${secondAttacker.name} deals ${damageToFirst} damage to ${
+          `🔥 ${secondAttacker.name} deals ${damageToFirst} damage to ${
             firstAttacker.name
           }. ${firstAttacker.name} has ${Math.max(opponentHp, 0)} HP left.`
         );
@@ -91,11 +96,7 @@ const PokemonBattle = () => {
     }
 
     // Add the winner announcement to the log
-    log.push(
-      `Winner: ${
-        playerHp > 0 ? `player's ${player.name}` : `cpu's ${opponent.name}`
-      }!`
-    );
+    log.push(`Winner: ${playerHp > 0 ? player.name : opponent.name}!`);
 
     // Display log messages with a 2-second delay
     for (let i = 0; i < log.length; i++) {
@@ -104,39 +105,71 @@ const PokemonBattle = () => {
     }
 
     // Set the winner after the log is fully displayed
-    setWinner(
-      playerHp > 0 ? `player's ${player.name}` : `cpu's ${opponent.name}`
-    );
+    setWinner(playerHp > 0 ? player.name : opponent.name);
     setIsBattleRunning(false);
   };
 
   return (
-    <div className="p-6 max-w-xl mx-auto bg-white rounded-xl shadow-md space-y-4">
-      <h1 className="text-2xl font-bold text-center">
-        Pokémon Battle Simulator
-      </h1>
-      <button
-        onClick={simulateBattle}
-        disabled={isBattleRunning}
-        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 disabled:bg-gray-400"
-      >
-        {isBattleRunning ? "Battle in Progress..." : "Start Battle"}
-      </button>
-      <div className="mt-4">
-        <h2 className="text-xl font-semibold">Battle Log:</h2>
-        <div className="bg-gray-100 p-4 rounded max-h-60 overflow-y-auto">
-          {battleLog.map((entry, index) => (
-            <p key={index} className="text-sm">
-              {entry}
-            </p>
-          ))}
+    <div className="bg-yellow-400 min-h-screen mt-2 pt-8">
+      <div className="flex flex-col p-6 max-w-xl mx-auto bg-white rounded-xl shadow-md space-y-4">
+        <h1 className="text-2xl font-bold text-center">
+          Pokémon Battle Simulator
+        </h1>
+        <div className="flex gap-4 justify-center">
+          <div>
+            <h3 className="text-xl font-bold text-center">Player</h3>
+            {player && (
+              <>
+                <img
+                  src={player.sprites.front_default}
+                  alt={player.name}
+                  className="w-32 h-32"
+                />
+                <p className="text-xl font-bold text-center">{player.name}</p>
+              </>
+            )}
+          </div>
+          <div>
+            <h3 className="text-xl font-bold text-center">Cpu</h3>
+            {opponent && (
+              <>
+                <img
+                  src={opponent.sprites.front_default}
+                  alt={opponent.name}
+                  className="w-32 h-32"
+                />
+                <p className="text-xl font-bold text-center">{opponent.name}</p>
+              </>
+            )}
+          </div>
         </div>
+        <button
+          onClick={simulateBattle}
+          disabled={isBattleRunning}
+          className="bg-white hover:bg-yellow-100 border border-black text-black font-bold py-2 px-4 rounded-non"
+        >
+          {isBattleRunning ? "Battle in Progress..." : "Start Battle"}
+        </button>
+        {isBattleRunning && (
+          <div className="mt-4">
+            <h2 className="text-xl font-semibold text-center mb-2">
+              Battle Log:
+            </h2>
+            <div className="bg-gray-100 p-4 rounded max-h-60 overflow-y-auto">
+              {battleLog.map((entry, index) => (
+                <p key={index} className="text-sm">
+                  {entry}
+                </p>
+              ))}
+            </div>
+          </div>
+        )}
+        {winner && (
+          <div className="mt-4 text-center">
+            <h2 className="text-2xl font-bold">Winner: {winner}!</h2>
+          </div>
+        )}
       </div>
-      {winner && (
-        <div className="mt-4 text-center">
-          <h2 className="text-2xl font-bold">Winner: {winner}!</h2>
-        </div>
-      )}
     </div>
   );
 };
