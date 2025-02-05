@@ -1,43 +1,45 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
-    <header className="bg-gray-800 text-white p-4 flex justify-between items-center">
-      <div className="flex items-center">
-        <img src="/logo.png" alt="Logo" className="h-10 w-10 mr-4" />
-        <nav className="flex space-x-4">
-          <Link
-            to="/details"
-            className="bg-transparent hover:bg-gray-700 text-white font-semibold py-2 px-4 border border-gray-700 rounded"
-          >
-            Details Page
-          </Link>
-          <Link
-            to="/roster"
-            className="bg-transparent hover:bg-gray-700 text-white font-semibold py-2 px-4 border border-gray-700 rounded"
-          >
-            Roster Page
-          </Link>
-          <Link
-            to="/battle"
-            className="bg-transparent hover:bg-gray-700 text-white font-semibold py-2 px-4 border border-gray-700 rounded"
-          >
-            Battle Page
-          </Link>
-          <Link
-            to="/leaderboard"
-            className="bg-transparent hover:bg-gray-700 text-white font-semibold py-2 px-4 border border-gray-700 rounded"
-          >
-            Leaderboard Page
-          </Link>
-        </nav>
-      </div>
-      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        Call to Action
+    <header className="bg-white mx-10 text-black p-4 flex justify-between items-center">
+      <Link to="/">
+        <img
+          src="/logo.png"
+          alt="Logo"
+          className="h-16 w-auto object-cover mr-4"
+        />
+      </Link>
+      <nav className="flex-grow flex justify-center space-x-4">
+        <Link
+          to="/details"
+          className="text-black hover:text-gray-700 font-semibold py-2 px-4"
+        >
+          Details Page
+        </Link>
+        <Link
+          to="/roster"
+          className="text-black hover:text-gray-700 font-semibold py-2 px-4"
+        >
+          Roster Page
+        </Link>
+        <Link
+          to="/battle"
+          className="text-black hover:text-gray-700 font-semibold py-2 px-4"
+        >
+          Battle Page
+        </Link>
+        <Link
+          to="/leaderboard"
+          className="text-black hover:text-gray-700 font-semibold py-2 px-4"
+        >
+          Leaderboard Page
+        </Link>
+      </nav>
+      <button className="bg-black hover:bg-slate-700 text-white font-bold py-2 px-4 rounded-none">
+        Play
       </button>
     </header>
   );
 };
-
 export default Header;
