@@ -1,6 +1,6 @@
 import React from "react";
 import HeroSection from "../components/HeroSection";
-import PokemonGrid from "../components/PokemonGrid.jsx";
+import PokemonGrid from "../components/PokemonGrid";
 
 const Home = () => {
   const handleUsernameSubmit = (username) => {

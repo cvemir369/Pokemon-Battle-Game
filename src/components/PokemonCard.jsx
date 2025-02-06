@@ -25,7 +25,7 @@ const typeColors = {
 const PokemonCard = ({ pokemon }) => {
   return (
     <Link
-      to={`/details/${pokemon.id}`}
+      to={`/pokemon/${pokemon.id}`}
       className="card bg-white p-4 rounded-none shadow hover:shadow-lg w-64 flex flex-col items-center"
     >
       <div className="w-full h-32 mb-2 flex justify-center items-center">
