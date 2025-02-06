@@ -13,12 +13,12 @@ const Header = () => {
         </Link>
       </div>
       <nav className="flex items-center space-x-8">
-        <Link
+        {/* <Link
           to="/details"
           className="text-black hover:text-gray-700 font-semibold py-2 px-4"
         >
           Pokédex
-        </Link>
+        </Link> */}
         <Link
           to="/roster"
           className="text-black hover:text-gray-700 font-semibold py-2 px-4"
@@ -38,9 +38,12 @@ const Header = () => {
           Leaderboard
         </Link>
       </nav>
-      <div className="flex items-center">
-        <button className="bg-black hover:bg-yellow-400 hover:text-black text-white font-bold py-2 px-4 rounded-none">
-          Play
+      <div className="flex items-center gap-2">
+        <button className="bg-white hover:bg-yellow-400 border border-black text-black font-semibold text-md py-2 px-4 rounded-none">
+          Sign Up
+        </button>
+        <button className="bg-black hover:bg-yellow-400 border border-black hover:text-black text-white font-semibold text-md py-2 px-4 rounded-none">
+          Log In
         </button>
       </div>
     </header>
