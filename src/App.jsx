@@ -8,21 +8,23 @@ import Header from "./components/Header";
 import Home from "./pages/Home";
 import Leaderboard from "./pages/Leaderboard";
 import PokemonBattle from "./pages/PokemonBattle";
+import { PokemonProvider } from "./context/PokemonContext";
 
 const App = () => {
   return (
-    <Router>
-      <Header />
-
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/pokemon" element={<PokemonList />} />
-        <Route path="/pokemon/:id" element={<PokemonDetails />} />
-        <Route path="/roster" element={<PokemonRoster />} />
-        <Route path="/leaderboard" element={<Leaderboard />} />
-        <Route path="/battle" element={<PokemonBattle />} />
-      </Routes>
-    </Router>
+    <PokemonProvider>
+      <Router>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/pokemon" element={<PokemonList />} />
+          <Route path="/pokemon/:id" element={<PokemonDetails />} />
+          <Route path="/roster" element={<PokemonRoster />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/battle" element={<PokemonBattle />} />
+        </Routes>
+      </Router>
+    </PokemonProvider>
   );
 };
 
