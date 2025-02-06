@@ -1,12 +1,21 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"; // Для маршрутизации
-import PokemonList from "./components/PokemonList"; // Компонент списка покемонов
-import PokemonDetails from "./pages/PokemonDetails"; // Компонент для подробностей покемона (страница)
-import PokemonRoster from "./pages/PokemonRoster"; // Компонент для ростера покемонов (страница)
 
-function App() {
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"; 
+import PokemonList from "./components/PokemonList"; 
+import PokemonDetails from "./pages/PokemonDetails"; 
+import PokemonRoster from "./pages/PokemonRoster"; 
+
+import Header from "./components/Header";
+import Home from "./pages/Home";
+import Leaderboard from "./pages/Leaderboard";
+import Details from "./pages/Details";
+import PokemonBattle from "./pages/PokemonBattle";
+
+
+const App = () => {
   return (
     <Router>
+
       <nav>
         <ul>
           <li>
@@ -15,20 +24,28 @@ function App() {
           <li>
             <Link to="/roster">My Roster</Link>
           </li>{" "}
-          {/* Ссылка на страницу ростера */}
+         
         </ul>
       </nav>
 
       <Routes>
         <Route path="/" element={<PokemonList />} />{" "}
-        {/* Главная страница с Pokémon List */}
+      
         <Route path="/pokemon/:name" element={<PokemonDetails />} />{" "}
-        {/* Страница с деталями покемона */}
+       
         <Route path="/roster" element={<PokemonRoster />} />{" "}
-        {/* Страница с ростером покемонов */}
+      
+
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        {/* <Route path="/details/:id" element={<Details />} /> */}
+        <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/battle" element={<PokemonBattle />} />
+
       </Routes>
     </Router>
   );
-}
+};
 
 export default App;
