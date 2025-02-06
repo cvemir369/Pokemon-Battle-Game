@@ -14,23 +14,6 @@ const App = () => {
     <Router>
       <Header />
 
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/roster">My Roster</Link>
-          </li>
-          <li>
-            <Link to="/leaderboard">Leaderboard</Link>
-          </li>
-          <li>
-            <Link to="/battle">Battle</Link>
-          </li>
-        </ul>
-      </nav>
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/pokemon" element={<PokemonList />} />
