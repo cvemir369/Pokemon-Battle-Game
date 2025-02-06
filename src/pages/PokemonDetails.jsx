@@ -6,6 +6,7 @@ export default function PokemonDetails() {
   const { id } = useParams();
   const [pokemon, setPokemon] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isAdded, setIsAdded] = useState(false);
 
   useEffect(() => {
     axios
@@ -19,6 +20,25 @@ export default function PokemonDetails() {
         setLoading(false);
       });
   }, [id]);
+
+  useEffect(() => {
+    const roster = JSON.parse(localStorage.getItem("roster")) || [];
+    setIsAdded(roster.some((p) => p.id === pokemon?.id));
+  }, [pokemon]);
+
+  const addToRoster = () => {
+    if (!pokemon) return;
+    const roster = JSON.parse(localStorage.getItem("roster")) || [];
+    if (!roster.some((p) => p.id === pokemon.id)) {
+      roster.push({
+        id: pokemon.id,
+        name: pokemon.name,
+        sprite: pokemon.sprites.front_default,
+      });
+      localStorage.setItem("roster", JSON.stringify(roster));
+      setIsAdded(true);
+    }
+  };
 
   if (loading) {
     return <p className="text-center py-8">Loading Pokémon details...</p>;
@@ -64,6 +84,17 @@ export default function PokemonDetails() {
             </li>
           ))}
         </ul>
+        <button
+          onClick={addToRoster}
+          disabled={isAdded}
+          className={`mt-6 px-6 py-2 font-semibold rounded-md ${
+            isAdded
+              ? "bg-gray-400 text-white cursor-not-allowed"
+              : "bg-black text-white hover:bg-yellow-400 hover:text-black"
+          }`}
+        >
+          {isAdded ? "Already in Roster" : "Add to Roster"}
+        </button>
       </div>
     </div>
   );
