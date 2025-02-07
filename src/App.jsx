@@ -12,19 +12,19 @@ import { PokemonProvider } from "./context/PokemonContext";
 
 const App = () => {
   return (
-    <PokemonProvider>
-      <Router>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/pokemon" element={<PokemonList />} />
-          <Route path="/pokemon/:id" element={<PokemonDetails />} />
-          <Route path="/roster" element={<PokemonRoster />} />
-          <Route path="/leaderboard" element={<Leaderboard />} />
-          <Route path="/battle" element={<PokemonBattle />} />
-        </Routes>
-      </Router>
-    </PokemonProvider>
+    // <PokemonProvider>
+    <Router>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/pokemon" element={<PokemonList />} />
+        <Route path="/pokemon/:id" element={<PokemonDetails />} />
+        <Route path="/roster" element={<PokemonRoster />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/battle" element={<PokemonBattle />} />
+      </Routes>
+    </Router>
+    // </PokemonProvider>
   );
 };
 

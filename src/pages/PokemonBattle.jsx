@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import chooseRandomPokemon from "../utils/chooseRandomPokemon.js";
 import { calculateDamage } from "../utils/calculateDamage.js";
+import { getPokemon } from "../services/pokeapi.js";
+import PokemonCard from "../components/PokemonCard.jsx";
+
+const roster = [{ id: 15 }, { id: 25 }, { id: 6 }, { id: 9 }, { id: 3 }];
 
 const PokemonBattle = () => {
   const [battleLog, setBattleLog] = useState([]);
@@ -97,6 +101,10 @@ const PokemonBattle = () => {
 
   return (
     <div className="bg-yellow-400 min-h-screen mt-2 pt-8">
+      <div>
+        <h2>Pokemons in Roster</h2>
+        {/* <PokemonCard pokemon={player} /> */}
+      </div>
       <div className="flex flex-col p-6 max-w-xl mx-auto bg-white rounded-xl shadow-md space-y-4">
         <h1 className="text-2xl font-bold text-center">
           Pokémon Battle Simulator
@@ -132,7 +140,9 @@ const PokemonBattle = () => {
         <button
           onClick={simulateBattle}
           disabled={isBattleRunning}
-          className="bg-white hover:bg-yellow-100 border border-black text-black font-bold py-2 px-4 rounded-non"
+          className={`bg-black text-white px-6 py-2 rounded hover:bg-yellow-400 hover:text-black ${
+            isBattleRunning ? "cursor-progress" : "cursor-pointer"
+          }`}
         >
           {isBattleRunning ? "Battle in Progress..." : "Start Battle"}
         </button>
