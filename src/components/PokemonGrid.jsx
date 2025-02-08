@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import PokemonCard from "./PokemonCard";
 import PaginationButtons from "./PaginationButtons";
 import pokemonService from "../services/pokemonService";
 
 const ITEMS_PER_PAGE = 9;
 
-const PokemonGrid = () => {
+const PokemonGrid = ({ searchQuery }) => {
   const [pokemons, setPokemons] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const location = useLocation();
 
   const fetchPokemons = async (page) => {
     try {
