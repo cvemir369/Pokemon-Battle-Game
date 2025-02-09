@@ -29,12 +29,12 @@ export default function PokemonRoster() {
               className="flex flex-col items-center bg-white p-4 shadow-lg rounded-lg"
             >
               <img
-                src={pokemon.sprite}
-                alt={pokemon.name}
+                src={pokemon.pokemon.sprites.front_default}
+                alt={pokemon.pokemon.name}
                 className="w-24 h-24 object-cover mb-2"
               />
               <span className="text-lg font-semibold capitalize">
-                {pokemon.name}
+                {pokemon.pokemon.name}
               </span>
               <button
                 onClick={() => removeFromRoster(pokemon.id)}

@@ -24,6 +24,14 @@ export default function PokemonDetails() {
     fetchPokemon();
   }, [id]);
 
+  const addToRoster = () => {
+    const roster = JSON.parse(localStorage.getItem("roster")) || [];
+    if (roster.some((p) => p.id === pokemon.id)) return;
+    roster.push({ pokemon: pokemon, id: pokemon.id });
+    localStorage.setItem("roster", JSON.stringify(roster));
+    alert("Pokemon added to roster!");
+  };
+
   if (loading) return <div className="text-center py-8">Loading...</div>;
   if (error)
     return <div className="text-center text-red-500 py-8">{error}</div>;
@@ -73,6 +81,12 @@ export default function PokemonDetails() {
             </div>
           </div>
         </div>
+        <button
+          onClick={addToRoster}
+          className="bg-black text-white px-6 py-2 rounded hover:bg-yellow-400 hover:text-black cursor-pointer"
+        >
+          Add to Roster
+        </button>
       </div>
     </div>
   );
