@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import chooseRandomPokemon from "../utils/chooseRandomPokemon.js";
 import { calculateDamage } from "../utils/calculateDamage.js";
-import { Link } from "react-router-dom";
+import BattleRoster from "../components/BattleRoster";
+import BattleSimulator from "../components/BattleSimulator";
 
 const PokemonBattle = () => {
   const [battleLog, setBattleLog] = useState([]);
@@ -124,31 +125,12 @@ const PokemonBattle = () => {
           <p className="text-gray-500">You haven't added any Pokémon yet!</p>
         )}
         {!isBattleRunning && !winner && roster.length > 0 && (
-          <ul className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {roster.map((pokemon) => (
-              <li
-                key={pokemon.id}
-                className={`flex flex-col items-center p-4 shadow-lg rounded-lg cursor-pointer hover:outline-2 hover:outline-red-500 hover:shadow-xl ${
-                  selectedPokemonId === pokemon.id
-                    ? "shadow-xl bg-red-100 outline-2 outline-red-500"
-                    : "bg-white"
-                }`}
-                onClick={() => {
-                  setPlayer(pokemon.pokemon);
-                  setSelectedPokemonId(pokemon.id);
-                }}
-              >
-                <img
-                  src={pokemon.pokemon.sprites.front_default}
-                  alt={pokemon.pokemon.name}
-                  className="w-24 h-24 object-cover mb-2"
-                />
-                <span className="text-lg font-semibold capitalize">
-                  {pokemon.pokemon.name}
-                </span>
-              </li>
-            ))}
-          </ul>
+          <BattleRoster
+            roster={roster}
+            selectedPokemonId={selectedPokemonId}
+            setPlayer={setPlayer}
+            setSelectedPokemonId={setSelectedPokemonId}
+          />
         )}
         {!isBattleRunning && !winner && (
           <button
@@ -161,72 +143,12 @@ const PokemonBattle = () => {
         )}
       </div>
       {(isBattleRunning || winner) && (
-        <div className="flex flex-col p-6 max-w-xl mx-auto bg-white rounded-xl shadow-md space-y-4">
-          <h1 className="text-2xl font-bold text-center">
-            Pokémon Battle Simulator
-          </h1>
-          <div className="flex gap-4 justify-center">
-            <div>
-              <h3 className="text-xl font-bold text-center">Player</h3>
-              {player && (
-                <>
-                  <img
-                    src={player.sprites.front_default}
-                    alt={player.name}
-                    className="w-32 h-32"
-                  />
-                  <p className="text-xl font-bold text-center">{player.name}</p>
-                </>
-              )}
-            </div>
-            <div>
-              <h3 className="text-xl font-bold text-center">Cpu</h3>
-              {opponent && (
-                <>
-                  <img
-                    src={opponent.sprites.front_default}
-                    alt={opponent.name}
-                    className="w-32 h-32"
-                  />
-                  <p className="text-xl font-bold text-center">
-                    {opponent.name}
-                  </p>
-                </>
-              )}
-            </div>
-          </div>
-          <div className="mt-4">
-            <h2 className="text-xl font-semibold text-center mb-2">
-              Battle Log:
-            </h2>
-            <div className="bg-gray-100 p-4 rounded max-h-60 overflow-y-auto">
-              {battleLog.map((entry, index) => (
-                <p key={index} className="text-sm">
-                  {entry}
-                </p>
-              ))}
-            </div>
-          </div>
-          {winner && (
-            <div className="mt-4 text-center">
-              <h2 className="text-2xl font-bold">Winner: {winner}!</h2>
-              <div className="flex flex-col items-center">
-                <button
-                  onClick={() => window.location.reload()}
-                  className="bg-white mt-5 cursor-pointer hover:bg-yellow-400 border border-black text-black font-semibold text-md py-2 px-4 rounded-none"
-                >
-                  Play again
-                </button>
-                <Link
-                  to="/"
-                  className="cursor-pointer hover:underline text-black font-semibold text-md p-2 px-4 rounded-none"
-                >
-                  Back to Home
-                </Link>
-              </div>
-            </div>
-          )}
-        </div>
+        <BattleSimulator
+          player={player}
+          opponent={opponent}
+          battleLog={battleLog}
+          winner={winner}
+        />
       )}
     </div>
   );
