@@ -101,8 +101,9 @@ const PokemonBattle = () => {
     }
 
     // Set the winner after the log is fully displayed
-    setWinner(playerHp > 0 ? player.name : randomOpponent.name);
-    if (winner == player.name) {
+    const battleWinner = playerHp > 0 ? player.name : randomOpponent.name;
+    setWinner(battleWinner);
+    if (battleWinner === player.name) {
       setWins(wins + 1);
       localStorage.setItem("wins", JSON.stringify(wins + 1));
       setXp(xp + 10 + playerHp);
