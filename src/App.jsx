@@ -8,12 +8,13 @@ import Header from "./components/Header";
 import Home from "./pages/Home";
 import Leaderboard from "./pages/Leaderboard";
 import PokemonBattle from "./pages/PokemonBattle";
+// import { PokemonProvider } from "./context/PokemonContext";
 
 const App = () => {
   return (
+    // <PokemonProvider>
     <Router>
       <Header />
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/pokemon" element={<PokemonList />} />
@@ -23,6 +24,7 @@ const App = () => {
         <Route path="/battle" element={<PokemonBattle />} />
       </Routes>
     </Router>
+    // </PokemonProvider>
   );
 };
 

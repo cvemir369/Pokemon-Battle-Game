@@ -1,20 +1,8 @@
 import React, { useState, useEffect } from "react";
-import chooseRandomPokemon from "../utils/chooseRandomPokemon";
-
-const calculateDamage = (attacker, defender, isSpecial = false) => {
-  const level = 50;
-  const attackStat = isSpecial
-    ? attacker.stats[3].base_stat
-    : attacker.stats[1].base_stat;
-  const defenseStat = isSpecial
-    ? defender.stats[4].base_stat
-    : defender.stats[2].base_stat;
-  const randomFactor = 0.85 + Math.random() * 0.15;
-
-  return Math.floor(
-    ((2 * level) / 5 + 2) * (attackStat / defenseStat) * randomFactor
-  );
-};
+import chooseRandomPokemon from "../utils/chooseRandomPokemon.js";
+import { calculateDamage } from "../utils/calculateDamage.js";
+import BattleRoster from "../components/BattleRoster";
+import BattleSimulator from "../components/BattleSimulator";
 
 const PokemonBattle = () => {
   const [battleLog, setBattleLog] = useState([]);
@@ -22,38 +10,47 @@ const PokemonBattle = () => {
   const [opponent, setOpponent] = useState(null);
   const [player, setPlayer] = useState(null);
   const [isBattleRunning, setIsBattleRunning] = useState(false);
+  const [roster, setRoster] = useState(
+    JSON.parse(localStorage.getItem("roster")) || []
+  );
+  const [selectedPokemonId, setSelectedPokemonId] = useState(null);
+  const [wins, setWins] = useState(
+    JSON.parse(localStorage.getItem("wins")) || 0
+  );
+  const [losses, setLosses] = useState(
+    JSON.parse(localStorage.getItem("losses")) || 0
+  );
+  const [xp, setXp] = useState(JSON.parse(localStorage.getItem("xp")) || 0);
 
   useEffect(() => {
-    const fetchOpponent = async () => {
-      const randomOpponent = await chooseRandomPokemon();
-      setOpponent(randomOpponent);
-    };
-
-    const fetchPlayer = async () => {
-      const randomPlayer = await chooseRandomPokemon();
-      setPlayer(randomPlayer);
-    };
-
-    fetchPlayer();
-    fetchOpponent();
-  }, []);
+    if (player) {
+      const fetchOpponent = async () => {
+        const randomOpponent = await chooseRandomPokemon();
+        setOpponent(randomOpponent);
+      };
+      fetchOpponent();
+    }
+  }, [player]);
 
   const simulateBattle = async () => {
-    if (!opponent || !player || isBattleRunning) return;
+    if (!player || isBattleRunning) return;
 
     setIsBattleRunning(true);
     setBattleLog([]);
     setWinner(null);
 
+    const randomOpponent = await chooseRandomPokemon();
+    setOpponent(randomOpponent);
+
     let log = [];
     let playerHp = player.stats[0].base_stat;
-    let opponentHp = opponent.stats[0].base_stat;
+    let opponentHp = randomOpponent.stats[0].base_stat;
 
     const firstAttacker =
-      player.stats[5].base_stat >= opponent.stats[5].base_stat
+      player.stats[5].base_stat >= randomOpponent.stats[5].base_stat
         ? player
-        : opponent;
-    const secondAttacker = firstAttacker === player ? opponent : player;
+        : randomOpponent;
+    const secondAttacker = firstAttacker === player ? randomOpponent : player;
 
     log.push(`${firstAttacker.name} attacks first!`);
 
@@ -96,7 +93,7 @@ const PokemonBattle = () => {
     }
 
     // Add the winner announcement to the log
-    log.push(`Winner: ${playerHp > 0 ? player.name : opponent.name}!`);
+    log.push(`Winner: ${playerHp > 0 ? player.name : randomOpponent.name}!`);
 
     // Display log messages with a 2-second delay
     for (let i = 0; i < log.length; i++) {
@@ -105,71 +102,54 @@ const PokemonBattle = () => {
     }
 
     // Set the winner after the log is fully displayed
-    setWinner(playerHp > 0 ? player.name : opponent.name);
+    const battleWinner = playerHp > 0 ? player.name : randomOpponent.name;
+    setWinner(battleWinner);
+    if (battleWinner === player.name) {
+      setWins(wins + 1);
+      localStorage.setItem("wins", JSON.stringify(wins + 1));
+      setXp(xp + 10 + playerHp);
+      localStorage.setItem("xp", JSON.stringify(xp + 10 + playerHp));
+    } else {
+      setLosses(losses + 1);
+      localStorage.setItem("losses", JSON.stringify(losses + 1));
+    }
+
     setIsBattleRunning(false);
   };
 
   return (
     <div className="bg-yellow-400 min-h-screen mt-2 pt-8">
-      <div className="flex flex-col p-6 max-w-xl mx-auto bg-white rounded-xl shadow-md space-y-4">
-        <h1 className="text-2xl font-bold text-center">
-          Pokémon Battle Simulator
-        </h1>
-        <div className="flex gap-4 justify-center">
-          <div>
-            <h3 className="text-xl font-bold text-center">Player</h3>
-            {player && (
-              <>
-                <img
-                  src={player.sprites.front_default}
-                  alt={player.name}
-                  className="w-32 h-32"
-                />
-                <p className="text-xl font-bold text-center">{player.name}</p>
-              </>
-            )}
-          </div>
-          <div>
-            <h3 className="text-xl font-bold text-center">Cpu</h3>
-            {opponent && (
-              <>
-                <img
-                  src={opponent.sprites.front_default}
-                  alt={opponent.name}
-                  className="w-32 h-32"
-                />
-                <p className="text-xl font-bold text-center">{opponent.name}</p>
-              </>
-            )}
-          </div>
-        </div>
-        <button
-          onClick={simulateBattle}
-          disabled={isBattleRunning}
-          className="bg-white hover:bg-yellow-100 border border-black text-black font-bold py-2 px-4 rounded-non"
-        >
-          {isBattleRunning ? "Battle in Progress..." : "Start Battle"}
-        </button>
-        {isBattleRunning && (
-          <div className="mt-4">
-            <h2 className="text-xl font-semibold text-center mb-2">
-              Battle Log:
-            </h2>
-            <div className="bg-gray-100 p-4 rounded max-h-60 overflow-y-auto">
-              {battleLog.map((entry, index) => (
-                <p key={index} className="text-sm">
-                  {entry}
-                </p>
-              ))}
-            </div>
-          </div>
+      <div className="container mx-auto px-8 py-12 text-center">
+        <h1 className="text-3xl font-bold mb-6">Battle vs Random Pokémon</h1>
+        {!isBattleRunning && !winner && roster.length === 0 && (
+          <p className="text-gray-500">You haven't added any Pokémon yet!</p>
         )}
-        {winner && (
-          <div className="mt-4 text-center">
-            <h2 className="text-2xl font-bold">Winner: {winner}!</h2>
-          </div>
+        {!isBattleRunning && !winner && roster.length > 0 && (
+          <BattleRoster
+            roster={roster}
+            selectedPokemonId={selectedPokemonId}
+            setPlayer={setPlayer}
+            setSelectedPokemonId={setSelectedPokemonId}
+          />
+        )}
+        {!isBattleRunning && !winner && (
+          <button
+            onClick={simulateBattle}
+            disabled={!player}
+            className="bg-white mt-8 cursor-pointer hover:bg-yellow-400 border border-black text-black font-semibold text-md py-2 px-4 rounded-none"
+          >
+            {player ? "Start Battle" : "Choose a Pokémon to Start Battle"}
+          </button>
         )}
       </div>
+      {(isBattleRunning || winner) && (
+        <BattleSimulator
+          player={player}
+          opponent={opponent}
+          battleLog={battleLog}
+          winner={winner}
+        />
+      )}
     </div>
   );
 };
