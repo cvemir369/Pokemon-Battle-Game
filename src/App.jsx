@@ -8,7 +8,7 @@ import Header from "./components/Header";
 import Home from "./pages/Home";
 import Leaderboard from "./pages/Leaderboard";
 import PokemonBattle from "./pages/PokemonBattle";
-import { PokemonProvider } from "./context/PokemonContext";
+// import { PokemonProvider } from "./context/PokemonContext";
 
 const App = () => {
   return (
