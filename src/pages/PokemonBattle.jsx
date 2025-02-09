@@ -3,6 +3,7 @@ import chooseRandomPokemon from "../utils/chooseRandomPokemon.js";
 import { calculateDamage } from "../utils/calculateDamage.js";
 import BattleRoster from "../components/BattleRoster";
 import BattleSimulator from "../components/BattleSimulator";
+import HighScore from "../components/HighScore.jsx";
 
 const PokemonBattle = () => {
   const [battleLog, setBattleLog] = useState([]);
@@ -150,6 +151,7 @@ const PokemonBattle = () => {
           winner={winner}
         />
       )}
+      {winner && <HighScore highScore={xp} />}
     </div>
   );
 };
