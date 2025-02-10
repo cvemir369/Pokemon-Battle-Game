@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -7,6 +8,7 @@ export default function PokemonDetails() {
   const [pokemon, setPokemon] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isAdded, setIsAdded] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -50,6 +52,13 @@ export default function PokemonDetails() {
 
   return (
     <div className="container mx-auto px-8 py-12">
+      <button
+        onClick={() => navigate(-1)}
+        className="mb-4 bg-black text-white py-2 px-4 rounded hover:bg-yellow-400 hover:text-black"
+      >
+        ← Back
+      </button>
+
       <h2 className="text-3xl font-bold text-center capitalize mb-6">
         {pokemon.name}
       </h2>
