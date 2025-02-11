@@ -11,6 +11,7 @@ export default function PokemonDetails() {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  // Fetch Pokémon details from the service
   useEffect(() => {
     async function fetchPokemon() {
       try {
@@ -26,24 +27,33 @@ export default function PokemonDetails() {
     fetchPokemon();
   }, [id]);
 
+  // Check if Pokémon is in the roster
   useEffect(() => {
     if (!pokemon) return;
     const roster = JSON.parse(localStorage.getItem("roster")) || [];
     setIsAdded(roster.some((p) => p.id === pokemon.id));
   }, [pokemon]);
 
+  // Retrieve the current roster from localStorage
+  const getRoster = () => JSON.parse(localStorage.getItem("roster")) || [];
+
+  // Update the roster in localStorage
+  const updateRoster = (roster) => {
+    localStorage.setItem("roster", JSON.stringify(roster));
+  };
+
+  // Add Pokémon to the roster
   const addToRoster = () => {
     if (!pokemon) return;
-    const roster = JSON.parse(localStorage.getItem("roster")) || [];
-    if (!roster.some((p) => p.id === pokemon.id)) {
-      roster.push({
-        id: pokemon.id,
-        name: pokemon.name,
-        sprite: pokemon.sprites.front_default,
-      });
-      localStorage.setItem("roster", JSON.stringify(roster));
-      setIsAdded(true);
-    }
+    const roster = getRoster();
+    if (roster.some((p) => p.id === pokemon.id)) return;
+    roster.push({
+      id: pokemon.id,
+      name: pokemon.name,
+      sprite: pokemon.sprites.front_default,
+    });
+    updateRoster(roster);
+    setIsAdded(true);
   };
 
   if (loading)
