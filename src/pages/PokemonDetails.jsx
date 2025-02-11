@@ -34,32 +34,31 @@ export default function PokemonDetails() {
     setIsAdded(roster.some((p) => p.id === pokemon.id));
   }, [pokemon]);
 
-  // Retrieve the current roster from localStorage
-  const getRoster = () => JSON.parse(localStorage.getItem("roster")) || [];
-
-  // Update the roster in localStorage
-  const updateRoster = (roster) => {
-    localStorage.setItem("roster", JSON.stringify(roster));
-  };
-
   // Add Pokémon to the roster
   const addToRoster = () => {
     if (!pokemon) return;
-    const roster = getRoster();
+    const roster = JSON.parse(localStorage.getItem("roster")) || [];
     if (roster.some((p) => p.id === pokemon.id)) return;
     roster.push({
       id: pokemon.id,
       name: pokemon.name,
       sprite: pokemon.sprites.front_default,
     });
-    updateRoster(roster);
+    localStorage.setItem("roster", JSON.stringify(roster));
     setIsAdded(true);
   };
 
-  if (loading)
+  if (loading) {
     return <p className="text-center py-8">Loading Pokémon details...</p>;
-  if (error) return <p className="text-center text-red-500 py-8">{error}</p>;
-  if (!pokemon) return <p className="text-center py-8">Pokémon not found!</p>;
+  }
+
+  if (error) {
+    return <p className="text-center text-red-500 py-8">{error}</p>;
+  }
+
+  if (!pokemon) {
+    return <p className="text-center py-8">Pokémon not found!</p>;
+  }
 
   return (
     <div className="container mx-auto px-8 py-12">

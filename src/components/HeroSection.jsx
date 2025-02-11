@@ -1,11 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
+import debounce from "lodash/debounce";
 
-const HeroSection = ({ onSubmit }) => {
-  const [username, setUsername] = useState("");
+const HeroSection = ({ onSearch }) => {
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const handleUsernameSubmit = (e) => {
-    e.preventDefault();
-    onSubmit(username);
+  const debouncedSearch = useCallback(
+    debounce((query) => {
+      if (query.length >= 2) {
+        onSearch(query);
+      }
+    }, 1000),
+    [onSearch]
+  );
+
+  const handleInputChange = (e) => {
+    const value = e.target.value.toLowerCase();
+    setSearchQuery(value);
+    debouncedSearch(value);
   };
 
   return (
@@ -18,21 +29,21 @@ const HeroSection = ({ onSubmit }) => {
       <h1 className="text-4xl font-bold mb-8">Pokémon: Battle Game</h1>
       <div>
         <form
-          onSubmit={handleUsernameSubmit}
+          onSubmit={(e) => e.preventDefault()}
           className="flex justify-center items-center gap-4"
         >
           <input
             type="text"
-            placeholder="Enter your username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="p-2 bg-white border border-gray-400 rounded-non w-64"
+            placeholder="Find your Pokémon"
+            value={searchQuery}
+            onChange={handleInputChange}
+            className="p-2 bg-white border border-gray-400 rounded-none w-64"
           />
           <button
             type="submit"
-            className="bg-white hover:bg-yellow-100 border border-black text-black font-bold py-2 px-4 rounded-non"
+            className="bg-white hover:bg-yellow-400 border border-black text-black font-semibold text-md py-2 px-4 rounded-none"
           >
-            Submit
+            Search
           </button>
         </form>
       </div>

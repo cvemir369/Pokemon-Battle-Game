@@ -13,12 +13,12 @@ const Header = () => {
         </Link>
       </div>
       <nav className="flex items-center space-x-8">
-        <Link
+        {/* <Link
           to="/details"
           className="text-black hover:text-gray-700 font-semibold py-2 px-4"
         >
           Pokédex
-        </Link>
+        </Link> */}
         <Link
           to="/roster"
           className="text-black hover:text-gray-700 font-semibold py-2 px-4"
