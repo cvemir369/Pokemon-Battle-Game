@@ -1,31 +1,35 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import pokemonService from "../services/pokemonService";
 
 export default function PokemonDetails() {
   const { id } = useParams();
   const [pokemon, setPokemon] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isAdded, setIsAdded] = useState(false);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios
-      .get(`https://pokeapi.co/api/v2/pokemon/${id}`)
-      .then((response) => {
-        setPokemon(response.data);
+    async function fetchPokemon() {
+      try {
+        setLoading(true);
+        const data = await pokemonService.getPokemonById(id);
+        setPokemon(data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
         setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching Pokémon details:", error);
-        setLoading(false);
-      });
+      }
+    }
+    fetchPokemon();
   }, [id]);
 
   useEffect(() => {
+    if (!pokemon) return;
     const roster = JSON.parse(localStorage.getItem("roster")) || [];
-    setIsAdded(roster.some((p) => p.id === pokemon?.id));
+    setIsAdded(roster.some((p) => p.id === pokemon.id));
   }, [pokemon]);
 
   const addToRoster = () => {
@@ -42,13 +46,10 @@ export default function PokemonDetails() {
     }
   };
 
-  if (loading) {
+  if (loading)
     return <p className="text-center py-8">Loading Pokémon details...</p>;
-  }
-
-  if (!pokemon) {
-    return <p className="text-center text-red-500 py-8">Pokémon not found!</p>;
-  }
+  if (error) return <p className="text-center text-red-500 py-8">{error}</p>;
+  if (!pokemon) return <p className="text-center py-8">Pokémon not found!</p>;
 
   return (
     <div className="container mx-auto px-8 py-12">
@@ -74,6 +75,7 @@ export default function PokemonDetails() {
         <p className="text-lg">
           <strong>Weight:</strong> {pokemon.weight} hg
         </p>
+
         <h3 className="text-xl font-semibold mt-4">Types:</h3>
         <div className="flex gap-2 mt-2">
           {pokemon.types.map((type) => (
@@ -85,6 +87,7 @@ export default function PokemonDetails() {
             </span>
           ))}
         </div>
+
         <h3 className="text-xl font-semibold mt-4">Abilities:</h3>
         <ul className="mt-2 space-y-1">
           {pokemon.abilities.map((ability) => (
@@ -93,6 +96,17 @@ export default function PokemonDetails() {
             </li>
           ))}
         </ul>
+
+        <h3 className="text-xl font-semibold mt-4">Stats:</h3>
+        <div className="grid grid-cols-2 gap-4">
+          {pokemon.stats.map((stat) => (
+            <div key={stat.stat.name} className="mb-2 flex justify-between">
+              <span className="capitalize">{stat.stat.name}:</span>
+              <span>{stat.base_stat}</span>
+            </div>
+          ))}
+        </div>
+
         <button
           onClick={addToRoster}
           disabled={isAdded}
