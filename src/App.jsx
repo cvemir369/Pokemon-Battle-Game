@@ -11,11 +11,8 @@ import PokemonBattle from "./pages/PokemonBattle";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 
-
-
 const App = () => {
   return (
-    
     <Router>
       <Header />
       <Routes>
@@ -29,7 +26,6 @@ const App = () => {
         <Route path="/login" element={<Login />} />
       </Routes>
     </Router>
-   
   );
 };
 
