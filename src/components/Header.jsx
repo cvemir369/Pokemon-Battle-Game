@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const Header = () => {
   return (
     <header className="bg-white mx-10 text-black pt-2 pb-1 flex justify-between items-center">
-      <div className="flex itmes-cneter">
+      <div className="flex items-center">
         <Link to="/">
           <img
             src="/logo.png"
@@ -39,14 +39,19 @@ const Header = () => {
         </Link>
       </nav>
       <div className="flex items-center gap-2">
-        <button className="bg-white hover:bg-yellow-400 border border-black text-black font-semibold text-md py-2 px-4 rounded-none">
-          Sign Up
-        </button>
-        <button className="bg-black hover:bg-yellow-400 border border-black hover:text-black text-white font-semibold text-md py-2 px-4 rounded-none">
-          Log In
-        </button>
+        <Link to="/signup">
+          <button className="bg-white hover:bg-yellow-400 border border-black text-black font-semibold text-md py-2 px-4 rounded-none">
+            Sign Up
+          </button>
+        </Link>
+        <Link to="/login">
+          <button className="bg-black hover:bg-yellow-400 border border-black hover:text-black text-white font-semibold text-md py-2 px-4 rounded-none">
+            Log In
+          </button>
+        </Link>
       </div>
     </header>
   );
 };
+
 export default Header;
