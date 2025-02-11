@@ -11,15 +11,17 @@ import PokemonBattle from "./pages/PokemonBattle";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 
+
+
 const App = () => {
   return (
+    
     <Router>
       <Header />
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/pokemon" element={<PokemonList />} />
-        <Route path="/pokemon/:name" element={<PokemonDetails />} />
+        <Route path="/pokemon/:id" element={<PokemonDetails />} />
         <Route path="/roster" element={<PokemonRoster />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
         <Route path="/battle" element={<PokemonBattle />} />
@@ -27,6 +29,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
       </Routes>
     </Router>
+   
   );
 };
 
