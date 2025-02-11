@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const Header = () => {
   return (
@@ -13,30 +13,36 @@ const Header = () => {
         </Link>
       </div>
       <nav className="flex items-center space-x-8">
-        {/* <Link
-          to="/details"
-          className="text-black hover:text-gray-700 font-semibold py-2 px-4"
-        >
-          Pokédex
-        </Link> */}
-        <Link
+        <NavLink
           to="/roster"
-          className="text-black hover:text-gray-700 font-semibold py-2 px-4"
+          className={({ isActive }) =>
+            isActive
+              ? "text-yellow-400 font-semibold py-2 px-4"
+              : "text-black hover:text-gray-700 font-semibold py-2 px-4"
+          }
         >
           My Roster
-        </Link>
-        <Link
+        </NavLink>
+        <NavLink
           to="/battle"
-          className="text-black hover:text-gray-700 font-semibold py-2 px-4"
+          className={({ isActive }) =>
+            isActive
+              ? "text-yellow-400 font-semibold py-2 px-4"
+              : "text-black hover:text-gray-700 font-semibold py-2 px-4"
+          }
         >
           Battle
-        </Link>
-        <Link
+        </NavLink>
+        <NavLink
           to="/leaderboard"
-          className="text-black hover:text-gray-700 font-semibold py-2 px-4"
+          className={({ isActive }) =>
+            isActive
+              ? "text-yellow-400 font-semibold py-2 px-4"
+              : "text-black hover:text-gray-700 font-semibold py-2 px-4"
+          }
         >
           Leaderboard
-        </Link>
+        </NavLink>
       </nav>
       <div className="flex items-center gap-2">
         <Link to="/signup">
