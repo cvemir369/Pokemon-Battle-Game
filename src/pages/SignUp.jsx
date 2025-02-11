@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import authService from "../services/authService";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -8,6 +10,8 @@ const SignUp = () => {
     confirmPassword: "",
   });
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -17,24 +21,44 @@ const SignUp = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const { password, confirmPassword } = formData;
+    const { username, email, password, confirmPassword } = formData;
 
     if (password !== confirmPassword) {
       setError("Passwords do not match!");
       return;
     }
 
-    console.log("Sign up data:", formData);
-    setFormData({ username: "", email: "", password: "", confirmPassword: "" });
-    setError("");
+    try {
+      const response = await authService.signUp({
+        username,
+        email,
+        password,
+      });
+      console.log("Sign up successful:", response);
+      setSuccess("Sign up successful! Redirecting to login...");
+      setFormData({
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
+      setError("");
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000); // Redirect after 2 seconds
+    } catch (error) {
+      console.error("Sign up error:", error);
+      setError("Sign up failed. Please try again.");
+    }
   };
 
   return (
     <div className="max-w-sm mx-auto p-6 border rounded-lg shadow-lg mt-10 bg-white">
       <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
       {error && <p className="text-red-500 mb-4">{error}</p>}
+      {success && <p className="text-green-500 mb-4">{success}</p>}
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -74,6 +98,9 @@ const SignUp = () => {
         >
           Sign Up
         </button>
+        <p>
+          Already registered? <Link to="/login">Log in</Link>
+        </p>
       </form>
     </div>
   );
