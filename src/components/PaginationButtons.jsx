@@ -6,13 +6,13 @@ const PaginationButtons = ({ currentPage, onPreviousClick, onNextClick }) => {
       <button
         onClick={onPreviousClick}
         disabled={currentPage === 1}
-        className="bg-black hover:bg-yellow-400 text-white hover:text-black px-6 py-2 disabled:opacity-50"
+        className="bg-black hover:bg-yellow-400 cursor-pointer disabled:cursor-default text-white hover:text-black px-6 py-2 disabled:opacity-50"
       >
         ←
       </button>
       <button
         onClick={onNextClick}
-        className="bg-black hover:bg-yellow-400 text-white hover:text-black px-6 py-2"
+        className="bg-black hover:bg-yellow-400 cursor-pointer text-white hover:text-black px-6 py-2"
       >
         →
       </button>

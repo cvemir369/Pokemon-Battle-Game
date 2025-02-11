@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
+import { AuthProvider } from "./context/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 import Home from "./pages/Home";
 import PokemonList from "./components/PokemonList";
@@ -13,19 +15,31 @@ import Login from "./pages/Login";
 
 const App = () => {
   return (
-    <Router>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/pokemon" element={<PokemonList />} />
-        <Route path="/pokemon/:id" element={<PokemonDetails />} />
-        <Route path="/roster" element={<PokemonRoster />} />
-        <Route path="/leaderboard" element={<Leaderboard />} />
-        <Route path="/battle" element={<PokemonBattle />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/pokemon" element={<PokemonList />} />
+          <Route path="/pokemon/:id" element={<PokemonDetails />} />
+          <Route
+            path="/roster"
+            element={<ProtectedRoute element={<PokemonRoster />} />}
+          />
+
+          <Route
+            path="/battle"
+            element={<ProtectedRoute element={<PokemonBattle />} />}
+          />
+          <Route
+            path="/leaderboard"
+            element={<ProtectedRoute element={<Leaderboard />} />}
+          />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 };
 

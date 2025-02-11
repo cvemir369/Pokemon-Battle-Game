@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -6,6 +8,7 @@ const Login = () => {
     password: "",
   });
   const [error, setError] = useState("");
+  const { login } = useAuth();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -55,6 +58,9 @@ const Login = () => {
         >
           Login
         </button>
+        <p>
+          Not registered? <Link to="/signup">Sign up</Link>
+        </p>
       </form>
     </div>
   );
