@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import authService from "../services/authService";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +10,7 @@ const Login = () => {
   });
   const [error, setError] = useState("");
   const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -18,7 +20,7 @@ const Login = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!formData.email || !formData.password) {
@@ -26,9 +28,15 @@ const Login = () => {
       return;
     }
 
-    console.log("Login data:", formData);
-    setFormData({ email: "", password: "" });
-    setError("");
+    try {
+      const response = await authService.login(formData);
+      console.log("Login successful:", response);
+      login(); // Update the authentication state
+      navigate("/"); // Redirect to the home page or any other page
+    } catch (error) {
+      console.error("Login error:", error);
+      setError("Login failed. Please check your credentials and try again.");
+    }
   };
 
   return (

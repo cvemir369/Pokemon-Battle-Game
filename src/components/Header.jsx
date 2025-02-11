@@ -46,12 +46,12 @@ const Header = () => {
       </nav>
       <div className="flex items-center gap-2">
         <Link to="/signup">
-          <button className="bg-white hover:bg-yellow-400 border border-black text-black font-semibold text-md py-2 px-4 rounded-none">
+          <button className="bg-white hover:bg-yellow-400 border border-black text-black font-semibold text-md py-2 px-4 rounded-none cursor-pointer">
             Sign Up
           </button>
         </Link>
         <Link to="/login">
-          <button className="bg-black hover:bg-yellow-400 border border-black hover:text-black text-white font-semibold text-md py-2 px-4 rounded-none">
+          <button className="bg-black hover:bg-yellow-400 border border-black hover:text-black text-white font-semibold text-md py-2 px-4 rounded-none cursor-pointer">
             Log In
           </button>
         </Link>
