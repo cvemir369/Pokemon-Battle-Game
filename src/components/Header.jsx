@@ -1,19 +1,17 @@
 import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import Cookies from "js-cookie";
-import authService from "../services/authService";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
-  const { user, setUser } = useAuth();
+  const { logout } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
-      await authService.logout();
-      setUser(null);
-      localStorage.removeItem("user");
-      Cookies.remove("token"); // Use js-cookie to remove the token cookie
+      await logout();
+      navigate("/login");
     } catch (error) {
-      console.error("Logout failed:", error);
+      console.error("Logout failed", error);
     }
   };
 

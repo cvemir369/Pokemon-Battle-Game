@@ -53,7 +53,36 @@ export default function PokemonDetails() {
         ...prevUser,
         roster: [...prevUser.roster, pokemon.id],
       }));
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ ...user, roster: [...user.roster, pokemon.id] })
+      );
       setIsAdded(true);
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  // Remove Pokémon from the roster
+  const removeFromRoster = async () => {
+    if (!pokemon) return;
+    try {
+      await axios.delete(`${BASE_URL}/${user._id}/roster`, {
+        data: { pokemonId: pokemon.id },
+        withCredentials: true,
+      });
+      setUser((prevUser) => ({
+        ...prevUser,
+        roster: prevUser.roster.filter((p) => p !== pokemon.id),
+      }));
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          ...user,
+          roster: user.roster.filter((p) => p !== pokemon.id),
+        })
+      );
+      setIsAdded(false);
     } catch (error) {
       setError(error.message);
     }
@@ -128,15 +157,14 @@ export default function PokemonDetails() {
         </div>
 
         <button
-          onClick={addToRoster}
-          disabled={isAdded}
-          className={`mt-6 px-6 py-2 font-semibold rounded-md ${
+          onClick={!isAdded ? addToRoster : removeFromRoster}
+          className={`mt-6 px-6 py-2 font-semibold rounded-md cursor-pointer ${
             isAdded
-              ? "bg-gray-400 text-white cursor-not-allowed"
+              ? "bg-gray-400 text-white hover:bg-red-500"
               : "bg-black text-white hover:bg-yellow-400 hover:text-black"
           }`}
         >
-          {isAdded ? "Already in Roster" : "Add to Roster"}
+          {isAdded ? "Remove from Roster" : "Add to Roster"}
         </button>
       </div>
     </div>
