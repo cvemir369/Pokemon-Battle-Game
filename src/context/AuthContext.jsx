@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 
 const AuthContext = createContext();
 
@@ -7,9 +7,17 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
   const login = (userData) => {
     setLoading(true);
     setUser(userData);
+    localStorage.setItem("user", JSON.stringify(userData));
     setIsAuthenticated(true);
     setLoading(false);
   };
@@ -17,6 +25,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setIsAuthenticated(false);
     setUser(null);
+    localStorage.removeItem("user");
   };
 
   return (

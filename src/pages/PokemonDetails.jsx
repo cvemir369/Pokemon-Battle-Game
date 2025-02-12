@@ -8,7 +8,7 @@ import { useAuth } from "../context/AuthContext";
 const BASE_URL = "http://localhost:3000/users";
 
 export default function PokemonDetails() {
-  const { user, setUser } = useAuth(); // Get the authenticated user from context
+  const { user, setUser, isAuthenticated } = useAuth(); // Get the authenticated user from context
   const { id } = useParams();
   const [pokemon, setPokemon] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -34,8 +34,7 @@ export default function PokemonDetails() {
 
   // Check if Pokémon is in the roster
   useEffect(() => {
-    if (!pokemon) return;
-    console.log(user);
+    if (!pokemon || !isAuthenticated) return;
     setIsAdded(user.roster.some((p) => p === pokemon.id));
   }, [pokemon]);
 

@@ -14,7 +14,9 @@ const authService = {
     return response.data;
   },
   logout: async () => {
-    const response = await axios.post(`${BASE_URL}/logout`);
+    const response = await axios.post(`${BASE_URL}/logout`, {
+      withCredentials: true,
+    });
     return response.data;
   },
   getUser: async (userId) => {
