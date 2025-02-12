@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import authService from "../services/authService";
+import axios from "axios";
+
+const BASE_URL = "http://localhost:3000/users";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -9,8 +12,30 @@ const Login = () => {
     password: "",
   });
   const [error, setError] = useState("");
-  const { login } = useAuth();
+  const { login, user, setUser } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkSession = async () => {
+      try {
+        const response = await axios.get(
+          `${BASE_URL}/check-session/${user._id}`,
+          {
+            withCredentials: true,
+          }
+        );
+
+        if (response.data.authenticated) {
+          setUser(response.data.user);
+        } else {
+          setUser(null);
+        }
+      } catch (error) {
+        setUser(null);
+      }
+    };
+    checkSession();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -31,7 +56,8 @@ const Login = () => {
     try {
       const response = await authService.login(formData);
       console.log("Login successful:", response);
-      login(); // Update the authentication state
+      login(response.user); // Update the authentication state
+      setUser(response.user); // Set the user object in context
       navigate("/"); // Redirect to the home page or any other page
     } catch (error) {
       console.error("Login error:", error);

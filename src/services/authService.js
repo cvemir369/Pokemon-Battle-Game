@@ -1,5 +1,4 @@
 import axios from "axios";
-import { createCookie } from "react-router-dom";
 
 const BASE_URL = "http://localhost:3000/users";
 
