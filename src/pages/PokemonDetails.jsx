@@ -2,8 +2,13 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import pokemonService from "../services/pokemonService";
+import axios from "axios";
+import { useAuth } from "../context/AuthContext";
+
+const BASE_URL = "http://localhost:3000/users";
 
 export default function PokemonDetails() {
+  const { user, setUser } = useAuth(); // Get the authenticated user from context
   const { id } = useParams();
   const [pokemon, setPokemon] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -30,22 +35,29 @@ export default function PokemonDetails() {
   // Check if Pokémon is in the roster
   useEffect(() => {
     if (!pokemon) return;
-    const roster = JSON.parse(localStorage.getItem("roster")) || [];
-    setIsAdded(roster.some((p) => p.id === pokemon.id));
+    console.log(user);
+    setIsAdded(user.roster.some((p) => p === pokemon.id));
   }, [pokemon]);
 
   // Add Pokémon to the roster
-  const addToRoster = () => {
+  const addToRoster = async () => {
     if (!pokemon) return;
-    const roster = JSON.parse(localStorage.getItem("roster")) || [];
-    if (roster.some((p) => p.id === pokemon.id)) return;
-    roster.push({
-      id: pokemon.id,
-      name: pokemon.name,
-      sprite: pokemon.sprites.front_default,
-    });
-    localStorage.setItem("roster", JSON.stringify(roster));
-    setIsAdded(true);
+    try {
+      await axios.patch(
+        `${BASE_URL}/${user._id}/roster`,
+        { pokemonId: pokemon.id },
+        {
+          withCredentials: true,
+        }
+      );
+      setUser((prevUser) => ({
+        ...prevUser,
+        roster: [...prevUser.roster, pokemon.id],
+      }));
+      setIsAdded(true);
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   if (loading) {
