@@ -1,6 +1,22 @@
 import { Link, NavLink } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import Cookies from "js-cookie";
+import authService from "../services/authService";
 
 const Header = () => {
+  const { user, setUser } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+      setUser(null);
+      localStorage.removeItem("user");
+      Cookies.remove("token"); // Use js-cookie to remove the token cookie
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
   return (
     <header className="bg-white mx-10 text-black pt-2 pb-1 flex justify-between items-center">
       <div className="flex items-center">
@@ -55,6 +71,12 @@ const Header = () => {
             Log In
           </button>
         </Link>
+        <button
+          onClick={handleLogout}
+          className="bg-black hover:bg-yellow-400 border border-black hover:text-black text-white font-semibold text-md py-2 px-4 rounded-none cursor-pointer"
+        >
+          Log Out
+        </button>
       </div>
     </header>
   );
