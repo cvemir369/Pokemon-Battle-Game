@@ -96,6 +96,7 @@ const Leaderboard = () => {
                 <th className="px-4 py-2">Losses</th>
                 <th className="px-4 py-2">Ratio</th>
                 <th className="px-4 py-2">Games</th>
+                <th className="px-4 py-2">Image</th>
               </tr>
             </thead>
             <tbody>
@@ -122,6 +123,9 @@ const Leaderboard = () => {
                   </td>
                   <td className="px-4 py-2 text-center">
                     {score.user_id.gamesPlayed || 0}
+                  </td>
+                  <td className="px-4 py-2 text-center">
+                    <img src={score.user_id.image} alt="" />
                   </td>
                 </tr>
               ))}

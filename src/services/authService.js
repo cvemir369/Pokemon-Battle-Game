@@ -1,6 +1,7 @@
 import axios from "axios";
+import { createCookie } from "react-router-dom";
 
-const BASE_URL = "http://localhost:3000/api/users";
+const BASE_URL = "http://localhost:3000/users";
 
 const authService = {
   signUp: async (userData) => {
@@ -8,7 +9,9 @@ const authService = {
     return response.data;
   },
   login: async (userData) => {
-    const response = await axios.post(`${BASE_URL}/login`, userData);
+    const response = await axios.post(`${BASE_URL}/login`, userData, {
+      withCredentials: true,
+    });
     return response.data;
   },
   logout: async () => {

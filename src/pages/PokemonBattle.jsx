@@ -98,7 +98,7 @@ const PokemonBattle = () => {
 
     // Display log messages with a 2-second delay
     for (let i = 0; i < log.length; i++) {
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // 2-second delay
+      await new Promise((resolve) => setTimeout(resolve, 500)); // 2-second delay
       setBattleLog((prevLog) => [...prevLog, log[i]]);
     }
 
