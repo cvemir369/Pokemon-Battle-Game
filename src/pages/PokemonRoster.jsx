@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import pokemonService from "../services/pokemonService";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
@@ -10,6 +10,7 @@ export default function PokemonRoster() {
   const [pokemonIds, setPokemonIds] = useState([]);
   const [roster, setRoster] = useState([]);
   const { user, setUser } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -68,6 +69,13 @@ export default function PokemonRoster() {
   return (
     <section className="bg-yellow-400 min-h-screen mt-2 pt-8">
       <div className="container mx-auto px-8 py-12">
+        <button
+          onClick={() => navigate(-1)}
+          className="mb-4 bg-black text-white py-2 px-4 rounded hover:bg-yellow-400 hover:text-black"
+        >
+          &larr; Back
+        </button>
+
         <h1 className="text-3xl font-bold text-center mb-6">My Roster</h1>
         {roster.length === 0 ? (
           <p className="text-center text-gray-500">
@@ -98,14 +106,14 @@ export default function PokemonRoster() {
             ))}
           </ul>
         )}
-        <div className="text-left mt-8">
+        {/* <div className="text-left mt-8">
           <Link
             to="/"
             className="bg-transparent mt-8 cursor-pointer hover:text-white text-black font-semibold text-md"
           >
             &larr; Back to Home
           </Link>
-        </div>
+        </div> */}
       </div>
     </section>
   );
