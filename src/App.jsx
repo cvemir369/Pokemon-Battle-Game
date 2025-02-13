@@ -12,6 +12,7 @@ import Leaderboard from "./pages/Leaderboard";
 import PokemonBattle from "./pages/PokemonBattle";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
+import VerifyUsersEmail from "./pages/VerifyUsersEmail";
 
 const App = () => {
   return (
@@ -37,6 +38,7 @@ const App = () => {
           />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/verify/:token" element={<VerifyUsersEmail />} />
         </Routes>
       </Router>
     </AuthProvider>
