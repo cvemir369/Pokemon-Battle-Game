@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -28,10 +27,10 @@ const AppContent = () => {
       <Routes>
         <Route
           path="/"
-          element={isAuthenticated ? <Home /> : <Navigate to="/auth" />}
+          element={isAuthenticated ? <Home /> : <Navigate to="/login" />}
         />
         <Route
-          path="/auth"
+          path="/login"
           element={isAuthenticated ? <Navigate to="/" /> : <Login />}
         />
         <Route
@@ -40,29 +39,29 @@ const AppContent = () => {
         />
         <Route
           path="/pokemon"
-          element={isAuthenticated ? <PokemonList /> : <Navigate to="/auth" />}
+          element={isAuthenticated ? <PokemonList /> : <Navigate to="/login" />}
         />
         <Route
           path="/pokemon/:id"
           element={
-            isAuthenticated ? <PokemonDetails /> : <Navigate to="/auth" />
+            isAuthenticated ? <PokemonDetails /> : <Navigate to="/login" />
           }
         />
         <Route
           path="/roster"
           element={
-            isAuthenticated ? <PokemonRoster /> : <Navigate to="/auth" />
+            isAuthenticated ? <PokemonRoster /> : <Navigate to="/login" />
           }
         />
         <Route
           path="/battle"
           element={
-            isAuthenticated ? <PokemonBattle /> : <Navigate to="/auth" />
+            isAuthenticated ? <PokemonBattle /> : <Navigate to="/login" />
           }
         />
         <Route
           path="/leaderboard"
-          element={isAuthenticated ? <Leaderboard /> : <Navigate to="/auth" />}
+          element={isAuthenticated ? <Leaderboard /> : <Navigate to="/login" />}
         />
         <Route path="/verify/:token" element={<VerifyUsersEmail />} />
       </Routes>

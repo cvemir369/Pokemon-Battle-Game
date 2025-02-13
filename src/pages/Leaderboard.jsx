@@ -123,7 +123,10 @@ const Leaderboard = () => {
                     {score.user_id.gamesPlayed || 0}
                   </td>
                   <td className="px-4 py-2 text-center">
-                    <img src={score.user_id.image} alt="" />
+                    <img
+                      src={score.user_id.image || "/pokeball.png"}
+                      alt="avatar"
+                    />
                   </td>
                 </tr>
               ))}

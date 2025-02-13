@@ -66,8 +66,7 @@ const Header = () => {
                 Sign Up
               </button>
             </Link>
-            <Link to="/auth">
-              {" "}
+            <Link to="/login">
               <button className="bg-black hover:bg-yellow-400 border border-black hover:text-black text-white font-semibold text-md py-2 px-4 rounded-none cursor-pointer">
                 Log In
               </button>
@@ -77,12 +76,13 @@ const Header = () => {
           <>
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
+                <span className="font-semibold">{user?.score || 0} XP</span>
                 <img
-                  src={user?.image || "/default.jpg"}
+                  src={user?.image || "/pokeball.png"}
                   alt="User Avatar"
                   className="h-10 w-10 rounded-full object-cover"
                 />
-                <span className="font-semibold">{user?.score || 0} XP</span>
+                <span className="font-semibold">Hi, {user?.username}!</span>
               </div>
               <button
                 onClick={handleLogout}
