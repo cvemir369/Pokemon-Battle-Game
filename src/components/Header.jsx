@@ -31,7 +31,7 @@ const Header = () => {
           to="/roster"
           className={({ isActive }) =>
             isActive
-              ? "text-yellow-400 font-semibold py-2 px-4"
+              ? "text-yellow-600 font-semibold py-2 px-4"
               : "text-black hover:text-gray-700 font-semibold py-2 px-4"
           }
         >
@@ -41,7 +41,7 @@ const Header = () => {
           to="/battle"
           className={({ isActive }) =>
             isActive
-              ? "text-yellow-400 font-semibold py-2 px-4"
+              ? "text-yellow-600 font-semibold py-2 px-4"
               : "text-black hover:text-gray-700 font-semibold py-2 px-4"
           }
         >
@@ -51,7 +51,7 @@ const Header = () => {
           to="/leaderboard"
           className={({ isActive }) =>
             isActive
-              ? "text-yellow-400 font-semibold py-2 px-4"
+              ? "text-yellow-600 font-semibold py-2 px-4"
               : "text-black hover:text-gray-700 font-semibold py-2 px-4"
           }
         >

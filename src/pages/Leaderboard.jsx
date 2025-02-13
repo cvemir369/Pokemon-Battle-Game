@@ -76,14 +76,15 @@ const Leaderboard = () => {
 
   return (
     <section className="bg-yellow-400 min-h-screen mt-2 pt-8">
+      <h2 className="text-2xl font-bold mb-4 text-center">
+        Pokémon Battle: Leaderboard
+      </h2>
       <img
         src="/trophy.png"
         alt="Hero"
         className="h-32 w-auto mx-auto mb-8 rounded-none"
       />
-      <h2 className="text-2xl font-bold mb-4 text-center">
-        Pokémon Battle: Leaderboard
-      </h2>
+
       <div className="max-w-2xl mx-auto bg-white p-6 rounded-none shadow-lg">
         <div className="overflow-x-auto">
           <table className="w-full">
