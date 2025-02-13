@@ -6,7 +6,7 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:3000/users";
 
-const Login = () => {
+const Login = ({}) => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
