@@ -4,16 +4,16 @@ import { calculateDamage } from "../utils/calculateDamage.js";
 import BattleRoster from "../components/BattleRoster";
 import BattleSimulator from "../components/BattleSimulator";
 import HighScore from "../components/HighScore.jsx";
+import pokemonService from "../services/pokemonService";
 
 const PokemonBattle = () => {
+  const [pokemonIds, setPokemonIds] = useState([]);
   const [battleLog, setBattleLog] = useState([]);
   const [winner, setWinner] = useState(null);
   const [opponent, setOpponent] = useState(null);
   const [player, setPlayer] = useState(null);
   const [isBattleRunning, setIsBattleRunning] = useState(false);
-  const [roster, setRoster] = useState(
-    JSON.parse(localStorage.getItem("roster")) || []
-  );
+  const [roster, setRoster] = useState([]);
   const [selectedPokemonId, setSelectedPokemonId] = useState(null);
   const [wins, setWins] = useState(
     JSON.parse(localStorage.getItem("wins")) || 0
@@ -22,6 +22,29 @@ const PokemonBattle = () => {
     JSON.parse(localStorage.getItem("losses")) || 0
   );
   const [xp, setXp] = useState(JSON.parse(localStorage.getItem("xp")) || 0);
+
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (storedUser && storedUser.roster) {
+      setPokemonIds(storedUser.roster);
+    }
+  }, []);
+
+  useEffect(() => {
+    const fetchRoster = async () => {
+      try {
+        const rosterData = await Promise.all(
+          pokemonIds.map((id) => pokemonService.getPokemonById(id))
+        );
+        setRoster(rosterData);
+      } catch (error) {
+        console.error("Error fetching roster:", error);
+      }
+    };
+    if (pokemonIds.length > 0) {
+      fetchRoster();
+    }
+  }, [pokemonIds]);
 
   useEffect(() => {
     if (player) {
