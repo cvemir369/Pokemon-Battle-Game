@@ -26,7 +26,8 @@ const Login = () => {
         );
 
         if (response.data.authenticated) {
-          setUser(response.data.user);
+          // setUser(response.data.user);
+          navigate("/");
         } else {
           setUser(null);
         }

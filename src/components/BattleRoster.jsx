@@ -17,17 +17,17 @@ const BattleRoster = ({
               : "bg-white"
           }`}
           onClick={() => {
-            setPlayer(pokemon.pokemon);
+            setPlayer(pokemon); // Set the entire pokemon object as the player
             setSelectedPokemonId(pokemon.id);
           }}
         >
           <img
-            src={pokemon.pokemon.sprites.front_default}
-            alt={pokemon.pokemon.name}
+            src={pokemon.sprites.front_default}
+            alt={pokemon.name}
             className="w-24 h-24 object-cover mb-2"
           />
           <span className="text-lg font-semibold capitalize">
-            {pokemon.pokemon.name}
+            {pokemon.name}
           </span>
         </li>
       ))}

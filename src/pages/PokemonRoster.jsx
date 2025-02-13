@@ -1,17 +1,68 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import pokemonService from "../services/pokemonService";
+import axios from "axios";
+import { useAuth } from "../context/AuthContext";
+
+const BASE_URL = "http://localhost:3000/users";
 
 export default function PokemonRoster() {
+  const [pokemonIds, setPokemonIds] = useState([]);
   const [roster, setRoster] = useState([]);
+  const { user, setUser } = useAuth();
 
   useEffect(() => {
-    setRoster(JSON.parse(localStorage.getItem("roster")) || []);
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (storedUser && storedUser.roster) {
+      setPokemonIds(storedUser.roster);
+    }
   }, []);
 
-  const removeFromRoster = (id) => {
-    const updatedRoster = roster.filter((pokemon) => pokemon.id !== id);
-    setRoster(updatedRoster);
-    localStorage.setItem("roster", JSON.stringify(updatedRoster));
+  useEffect(() => {
+    const fetchRoster = async () => {
+      try {
+        const rosterData = await Promise.all(
+          pokemonIds.map((id) => pokemonService.getPokemonById(id))
+        );
+        setRoster(rosterData);
+      } catch (error) {
+        console.error("Error fetching roster:", error);
+      }
+    };
+    if (pokemonIds.length > 0) {
+      fetchRoster();
+    }
+  }, [pokemonIds]);
+
+  const removeFromRoster = async (id) => {
+    try {
+      await axios.delete(`${BASE_URL}/${user._id}/roster`, {
+        data: { pokemonId: id },
+        withCredentials: true,
+      });
+      setUser((prevUser) => ({
+        ...prevUser,
+        roster: prevUser.roster.filter((p) => p !== id),
+      }));
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          ...user,
+          roster: user.roster.filter((p) => p !== id),
+        })
+      );
+      // Update the pokemonIds state
+      const updatedPokemonIds = pokemonIds.filter(
+        (pokemonId) => pokemonId !== id
+      );
+      setPokemonIds(updatedPokemonIds);
+
+      // Update the roster state
+      const updatedRoster = roster.filter((pokemon) => pokemon.id !== id);
+      setRoster(updatedRoster);
+    } catch (error) {
+      console.error(error.message);
+    }
   };
 
   return (
@@ -29,12 +80,12 @@ export default function PokemonRoster() {
               className="flex flex-col items-center bg-white p-4 shadow-lg rounded-lg"
             >
               <img
-                src={pokemon.pokemon.sprites.front_default}
-                alt={pokemon.pokemon.name}
+                src={pokemon.sprites.front_default}
+                alt={pokemon.name}
                 className="w-24 h-24 object-cover mb-2"
               />
               <span className="text-lg font-semibold capitalize">
-                {pokemon.pokemon.name}
+                {pokemon.name}
               </span>
               <button
                 onClick={() => removeFromRoster(pokemon.id)}

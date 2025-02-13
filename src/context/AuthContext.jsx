@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
+import authService from "../services/authService";
 
 const AuthContext = createContext();
 
@@ -11,6 +12,7 @@ export const AuthProvider = ({ children }) => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
+      setIsAuthenticated(true);
     }
   }, []);
 
@@ -22,7 +24,8 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   };
 
-  const logout = () => {
+  const logout = async () => {
+    await authService.logout();
     setIsAuthenticated(false);
     setUser(null);
     localStorage.removeItem("user");
@@ -30,7 +33,15 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, login, logout, user, setUser, loading }}
+      value={{
+        isAuthenticated,
+        setIsAuthenticated,
+        login,
+        logout,
+        user,
+        setUser,
+        loading,
+      }}
     >
       {children}
     </AuthContext.Provider>
