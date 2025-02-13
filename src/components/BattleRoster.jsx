@@ -11,9 +11,9 @@ const BattleRoster = ({
       {roster.map((pokemon) => (
         <li
           key={pokemon.id}
-          className={`flex flex-col items-center p-4 shadow-lg rounded-lg cursor-pointer hover:outline-2 hover:outline-red-500 hover:shadow-xl ${
+          className={`flex flex-col items-center p-4 shadow-lg rounded-none cursor-pointer hover:outline-2 hover:outline-red-500 hover:shadow-xl ${
             selectedPokemonId === pokemon.id
-              ? "shadow-xl bg-red-100 outline-2 outline-red-500"
+              ? "shadow-xl bg-red-100 outline-2 outline-red-500 cursor-pointer"
               : "bg-white"
           }`}
           onClick={() => {

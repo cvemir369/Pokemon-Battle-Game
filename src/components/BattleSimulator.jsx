@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const BattleSimulator = ({ player, opponent, battleLog, winner }) => {
   return (
-    <div className="flex flex-col p-6 max-w-xl mx-auto bg-white rounded-xl shadow-md space-y-4">
+    <div className="flex flex-col p-6 max-w-xl mx-auto bg-white rounded-none shadow-md space-y-4">
       <h1 className="text-2xl font-bold text-center">
         Pokémon Battle Simulator
       </h1>

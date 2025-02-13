@@ -3,7 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
-  const { logout } = useAuth();
+  const { isAuthenticated, logout, user } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -31,7 +31,7 @@ const Header = () => {
           to="/roster"
           className={({ isActive }) =>
             isActive
-              ? "text-yellow-400 font-semibold py-2 px-4"
+              ? "text-yellow-600 font-semibold py-2 px-4"
               : "text-black hover:text-gray-700 font-semibold py-2 px-4"
           }
         >
@@ -41,7 +41,7 @@ const Header = () => {
           to="/battle"
           className={({ isActive }) =>
             isActive
-              ? "text-yellow-400 font-semibold py-2 px-4"
+              ? "text-yellow-600 font-semibold py-2 px-4"
               : "text-black hover:text-gray-700 font-semibold py-2 px-4"
           }
         >
@@ -51,7 +51,7 @@ const Header = () => {
           to="/leaderboard"
           className={({ isActive }) =>
             isActive
-              ? "text-yellow-400 font-semibold py-2 px-4"
+              ? "text-yellow-600 font-semibold py-2 px-4"
               : "text-black hover:text-gray-700 font-semibold py-2 px-4"
           }
         >
@@ -59,22 +59,39 @@ const Header = () => {
         </NavLink>
       </nav>
       <div className="flex items-center gap-2">
-        <Link to="/signup">
-          <button className="bg-white hover:bg-yellow-400 border border-black text-black font-semibold text-md py-2 px-4 rounded-none cursor-pointer">
-            Sign Up
-          </button>
-        </Link>
-        <Link to="/login">
-          <button className="bg-black hover:bg-yellow-400 border border-black hover:text-black text-white font-semibold text-md py-2 px-4 rounded-none cursor-pointer">
-            Log In
-          </button>
-        </Link>
-        <button
-          onClick={handleLogout}
-          className="bg-black hover:bg-yellow-400 border border-black hover:text-black text-white font-semibold text-md py-2 px-4 rounded-none cursor-pointer"
-        >
-          Log Out
-        </button>
+        {!isAuthenticated ? (
+          <>
+            <Link to="/signup">
+              <button className="bg-white hover:bg-yellow-400 border border-black text-black font-semibold text-md py-2 px-4 rounded-none cursor-pointer">
+                Sign Up
+              </button>
+            </Link>
+            <Link to="/login">
+              <button className="bg-black hover:bg-yellow-400 border border-black hover:text-black text-white font-semibold text-md py-2 px-4 rounded-none cursor-pointer">
+                Log In
+              </button>
+            </Link>
+          </>
+        ) : (
+          <>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <img
+                  src={user?.image || "/default.jpg"}
+                  alt="User Avatar"
+                  className="h-10 w-10 rounded-full object-cover"
+                />
+                <span className="font-semibold">{user?.xp || 0} XP</span>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="bg-black hover:bg-yellow-400 border border-black hover:text-black text-white font-semibold text-md py-2 px-4 rounded-none cursor-pointer"
+              >
+                Log Out
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </header>
   );
