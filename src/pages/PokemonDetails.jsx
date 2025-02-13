@@ -101,72 +101,74 @@ export default function PokemonDetails() {
   }
 
   return (
-    <div className="container mx-auto px-8 py-12">
-      <button
-        onClick={() => navigate(-1)}
-        className="mb-4 bg-black text-white py-2 px-4 rounded hover:bg-yellow-400 hover:text-black"
-      >
-        ← Back
-      </button>
-
-      <h2 className="text-3xl font-bold text-center capitalize mb-6">
-        {pokemon.name}
-      </h2>
-      <div className="flex flex-col items-center bg-white shadow-lg p-6 rounded-none">
-        <img
-          src={pokemon.sprites.front_default}
-          alt={pokemon.name}
-          className="w-40 h-auto mb-4"
-        />
-        <p className="text-lg">
-          <strong>Height:</strong> {pokemon.height} dm
-        </p>
-        <p className="text-lg">
-          <strong>Weight:</strong> {pokemon.weight} hg
-        </p>
-
-        <h3 className="text-xl font-semibold mt-4">Types:</h3>
-        <div className="flex gap-2 mt-2">
-          {pokemon.types.map((type) => (
-            <span
-              key={type.type.name}
-              className="bg-gray-200 px-3 py-1 rounded-none text-sm capitalize"
-            >
-              {type.type.name}
-            </span>
-          ))}
-        </div>
-
-        <h3 className="text-xl font-semibold mt-4">Abilities:</h3>
-        <ul className="mt-2 space-y-1">
-          {pokemon.abilities.map((ability) => (
-            <li key={ability.ability.name} className="capitalize">
-              {ability.ability.name}
-            </li>
-          ))}
-        </ul>
-
-        <h3 className="text-xl font-semibold mt-4">Stats:</h3>
-        <div className="grid grid-cols-2 gap-4">
-          {pokemon.stats.map((stat) => (
-            <div key={stat.stat.name} className="mb-2 flex justify-between">
-              <span className="capitalize">{stat.stat.name}:</span>
-              <span>{stat.base_stat}</span>
-            </div>
-          ))}
-        </div>
-
+    <section className="bg-yellow-400 min-h-screen mt-2 pt-8">
+      <div className="container mx-auto px-8 py-12">
         <button
-          onClick={!isAdded ? addToRoster : removeFromRoster}
-          className={`mt-6 px-6 py-2 font-semibold rounded-md cursor-pointer ${
-            isAdded
-              ? "bg-gray-400 text-white hover:bg-red-500"
-              : "bg-black text-white hover:bg-yellow-400 hover:text-black"
-          }`}
+          onClick={() => navigate(-1)}
+          className="mb-4 bg-black text-white py-2 px-4 rounded hover:bg-yellow-400 hover:text-black"
         >
-          {isAdded ? "Remove from Roster" : "Add to Roster"}
+          ← Back
         </button>
+
+        <h2 className="text-3xl font-bold text-center capitalize mb-6">
+          {pokemon.name}
+        </h2>
+        <div className="flex flex-col items-center bg-white shadow-lg p-6 rounded-none">
+          <img
+            src={pokemon.sprites.front_default}
+            alt={pokemon.name}
+            className="w-40 h-auto mb-4"
+          />
+          <p className="text-lg">
+            <strong>Height:</strong> {pokemon.height} dm
+          </p>
+          <p className="text-lg">
+            <strong>Weight:</strong> {pokemon.weight} hg
+          </p>
+
+          <h3 className="text-xl font-semibold mt-4">Types:</h3>
+          <div className="flex gap-2 mt-2">
+            {pokemon.types.map((type) => (
+              <span
+                key={type.type.name}
+                className="bg-gray-200 px-3 py-1 rounded-none text-sm capitalize"
+              >
+                {type.type.name}
+              </span>
+            ))}
+          </div>
+
+          <h3 className="text-xl font-semibold mt-4">Abilities:</h3>
+          <ul className="mt-2 space-y-1">
+            {pokemon.abilities.map((ability) => (
+              <li key={ability.ability.name} className="capitalize">
+                {ability.ability.name}
+              </li>
+            ))}
+          </ul>
+
+          <h3 className="text-xl font-semibold mt-4">Stats:</h3>
+          <div className="grid grid-cols-2 gap-4">
+            {pokemon.stats.map((stat) => (
+              <div key={stat.stat.name} className="mb-2 flex justify-between">
+                <span className="capitalize">{stat.stat.name}:</span>
+                <span>{stat.base_stat}</span>
+              </div>
+            ))}
+          </div>
+
+          <button
+            onClick={!isAdded ? addToRoster : removeFromRoster}
+            className={`mt-6 px-6 py-2 font-semibold rounded-md cursor-pointer ${
+              isAdded
+                ? "bg-gray-400 text-white hover:bg-red-500"
+                : "bg-black text-white hover:bg-yellow-400 hover:text-black"
+            }`}
+          >
+            {isAdded ? "Remove from Roster" : "Add to Roster"}
+          </button>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
