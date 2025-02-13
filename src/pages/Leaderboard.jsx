@@ -67,7 +67,7 @@ const Leaderboard = () => {
   if (loading)
     return (
       <div className="flex justify-center items-center p-4">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400"></div>
+        <div className="animate-spin rounded-none h-8 w-8 border-b-2 border-yellow-400"></div>
       </div>
     );
 
@@ -79,12 +79,12 @@ const Leaderboard = () => {
       <img
         src="/trophy.png"
         alt="Hero"
-        className="h-32 w-auto mx-auto mb-8 rounded-3xl"
+        className="h-32 w-auto mx-auto mb-8 rounded-none"
       />
       <h2 className="text-2xl font-bold mb-4 text-center">
         Pokémon Battle: Leaderboard
       </h2>
-      <div className="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+      <div className="max-w-2xl mx-auto bg-white p-6 rounded-none shadow-lg">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
