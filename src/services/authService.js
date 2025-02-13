@@ -37,17 +37,19 @@ const authService = {
 
   updateUser: async (userId, userData) => {
     try {
-      // First update user data
-      await axios.put(`${BASE_URL}/${userId}`, userData, {
+      // Store initial response from PUT request
+      const putResponse = await axios.put(`${BASE_URL}/${userId}`, userData, {
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",
         },
       });
 
-      // If image URL is provided, update it
+      let finalUserData = putResponse.data;
+
+      // If image URL is provided, update it and get the response
       if (userData.image) {
-        await axios.patch(
+        const imageResponse = await axios.patch(
           `${BASE_URL}/${userId}`,
           { image: userData.image },
           {
@@ -57,14 +59,13 @@ const authService = {
             },
           }
         );
+        finalUserData = imageResponse.data;
       }
 
-      // Fetch the latest user data after all updates
-      const updatedUserResponse = await axios.get(`${BASE_URL}/${userId}`, {
-        withCredentials: true,
-      });
+      // Store the updated user data in localStorage
+      localStorage.setItem("user", JSON.stringify(finalUserData));
 
-      return updatedUserResponse.data; // Return the fresh user data
+      return finalUserData;
     } catch (error) {
       console.error("AuthService update error:", error);
       throw error;

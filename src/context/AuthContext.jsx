@@ -16,6 +16,16 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const updateUser = async (userData) => {
+    try {
+      setUser(userData);
+      localStorage.setItem("user", JSON.stringify(userData));
+      setIsAuthenticated(true);
+    } catch (error) {
+      console.error("Update user error:", error);
+    }
+  };
+
   useEffect(() => {
     const initializeAuth = async () => {
       try {
@@ -71,7 +81,7 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     user,
-    setUser,
+    setUser: updateUser,
     loading,
   };
 
