@@ -112,7 +112,7 @@ export default function PokemonDetails() {
       <h2 className="text-3xl font-bold text-center capitalize mb-6">
         {pokemon.name}
       </h2>
-      <div className="flex flex-col items-center bg-white shadow-lg p-6 rounded-lg">
+      <div className="flex flex-col items-center bg-white shadow-lg p-6 rounded-none">
         <img
           src={pokemon.sprites.front_default}
           alt={pokemon.name}
@@ -130,7 +130,7 @@ export default function PokemonDetails() {
           {pokemon.types.map((type) => (
             <span
               key={type.type.name}
-              className="bg-gray-200 px-3 py-1 rounded text-sm capitalize"
+              className="bg-gray-200 px-3 py-1 rounded-none text-sm capitalize"
             >
               {type.type.name}
             </span>

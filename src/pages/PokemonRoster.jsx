@@ -69,14 +69,6 @@ export default function PokemonRoster() {
     <section className="bg-yellow-400 min-h-screen mt-2 pt-8">
       <div className="container mx-auto px-8 py-12">
         <h1 className="text-3xl font-bold text-center mb-6">My Roster</h1>
-        <div className="text-left mt-8">
-          <Link
-            to="/"
-            className="bg-transparent mt-8 cursor-pointer hover:text-white text-black font-semibold text-md"
-          >
-            &larr; Back to Home
-          </Link>
-        </div>
         {roster.length === 0 ? (
           <p className="text-center text-gray-500">
             You haven't added any Pokémon yet!
@@ -86,7 +78,7 @@ export default function PokemonRoster() {
             {roster.map((pokemon) => (
               <li
                 key={pokemon.id}
-                className="flex flex-col items-center mt-8 bg-white p-4 shadow-lg rounded-none"
+                className="flex flex-col items-center bg-white p-4 shadow-lg rounded-none"
               >
                 <img
                   src={pokemon.sprites.front_default}
@@ -106,6 +98,14 @@ export default function PokemonRoster() {
             ))}
           </ul>
         )}
+        <div className="text-left mt-8">
+          <Link
+            to="/"
+            className="bg-transparent mt-8 cursor-pointer hover:text-white text-black font-semibold text-md"
+          >
+            &larr; Back to Home
+          </Link>
+        </div>
       </div>
     </section>
   );

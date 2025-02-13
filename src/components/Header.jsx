@@ -3,7 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, user } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -73,12 +73,24 @@ const Header = () => {
             </Link>
           </>
         ) : (
-          <button
-            onClick={handleLogout}
-            className="bg-black hover:bg-yellow-400 border border-black hover:text-black text-white font-semibold text-md py-2 px-4 rounded-none cursor-pointer"
-          >
-            Log Out
-          </button>
+          <>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <img
+                  src={user?.image || "/default.jpg"}
+                  alt="User Avatar"
+                  className="h-10 w-10 rounded-full object-cover"
+                />
+                <span className="font-semibold">{user?.xp || 0} XP</span>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="bg-black hover:bg-yellow-400 border border-black hover:text-black text-white font-semibold text-md py-2 px-4 rounded-none cursor-pointer"
+              >
+                Log Out
+              </button>
+            </div>
+          </>
         )}
       </div>
     </header>
