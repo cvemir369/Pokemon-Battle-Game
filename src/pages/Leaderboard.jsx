@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
 
 const Leaderboard = () => {
   const [scores, setScores] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [serverScores, setServerScores] = useState([]);
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchScores = async () => {
@@ -21,13 +23,6 @@ const Leaderboard = () => {
         const wins = JSON.parse(localStorage.getItem("wins")) || 0;
         const xp = JSON.parse(localStorage.getItem("xp")) || 0;
         const username = localStorage.getItem("username") || "Player"; // Removed JSON.parse
-
-        // Debug: Log the values
-        console.log("Retrieved from localStorage:", {
-          username,
-          wins,
-          xp,
-        });
 
         // Create current player score object
         const currentPlayerScore = {
@@ -106,7 +101,9 @@ const Leaderboard = () => {
                   key={index}
                   className={`${
                     index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                  } hover:bg-yellow-100`}
+                  } hover:bg-yellow-100 ${
+                    score.user_id.username === user.username ? "font-bold" : ""
+                  }`}
                 >
                   <td className="px-4 py-2 text-center">{index + 1}</td>
                   <td className="px-4 py-2">{score.user_id.username}</td>

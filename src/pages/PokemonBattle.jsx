@@ -3,8 +3,9 @@ import chooseRandomPokemon from "../utils/chooseRandomPokemon.js";
 import { calculateDamage } from "../utils/calculateDamage.js";
 import BattleRoster from "../components/BattleRoster";
 import BattleSimulator from "../components/BattleSimulator";
-import HighScore from "../components/HighScore.jsx";
 import pokemonService from "../services/pokemonService";
+import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 const PokemonBattle = () => {
   const [pokemonIds, setPokemonIds] = useState([]);
@@ -15,21 +16,23 @@ const PokemonBattle = () => {
   const [isBattleRunning, setIsBattleRunning] = useState(false);
   const [roster, setRoster] = useState([]);
   const [selectedPokemonId, setSelectedPokemonId] = useState(null);
-  const [wins, setWins] = useState(
-    JSON.parse(localStorage.getItem("wins")) || 0
-  );
-  const [losses, setLosses] = useState(
-    JSON.parse(localStorage.getItem("losses")) || 0
-  );
-  const [xp, setXp] = useState(JSON.parse(localStorage.getItem("xp")) || 0);
+  const { user, setUser } = useAuth();
+  const [wins, setWins] = useState(user?.wins || 0);
+  const [losses, setLosses] = useState(user?.losses || 0);
+  const [xp, setXp] = useState(user?.score || 0);
 
+  // Fetch the user's roster from the local storage
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (storedUser && storedUser.roster) {
       setPokemonIds(storedUser.roster);
+      setWins(storedUser.wins);
+      setLosses(storedUser.losses);
+      setXp(storedUser.score);
     }
   }, []);
 
+  // Fetch the Pokémon data for the user's roster
   useEffect(() => {
     const fetchRoster = async () => {
       try {
@@ -46,6 +49,7 @@ const PokemonBattle = () => {
     }
   }, [pokemonIds]);
 
+  // Choose a random Pokémon for the opponent
   useEffect(() => {
     if (player) {
       const fetchOpponent = async () => {
@@ -128,14 +132,66 @@ const PokemonBattle = () => {
     // Set the winner after the log is fully displayed
     const battleWinner = playerHp > 0 ? player.name : randomOpponent.name;
     setWinner(battleWinner);
+
     if (battleWinner === player.name) {
-      setWins(wins + 1);
-      localStorage.setItem("wins", JSON.stringify(wins + 1));
-      setXp(xp + 10 + playerHp);
-      localStorage.setItem("xp", JSON.stringify(xp + 10 + playerHp));
+      const newWins = wins + 1;
+      const newXp = xp + 10 + playerHp;
+      setWins(newWins);
+      setXp(newXp);
+
+      // Save to backend and local storage
+      try {
+        const response = await axios.patch(
+          `http://localhost:3000/users/${user._id}/stats`,
+          {
+            score: newXp,
+            wins: newWins,
+            losses: losses,
+          },
+          {
+            withCredentials: true,
+          }
+        );
+        const updatedUser = {
+          ...user,
+          score: newXp,
+          wins: newWins,
+          winLossRatio: response.data.winLossRatio,
+          gamesPlayed: response.data.gamesPlayed,
+        };
+        setUser(updatedUser);
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+      } catch (error) {
+        console.error("Error updating user stats:", error);
+      }
     } else {
-      setLosses(losses + 1);
-      localStorage.setItem("losses", JSON.stringify(losses + 1));
+      const newLosses = losses + 1;
+      setLosses(newLosses);
+
+      // Save to backend and local storage
+      try {
+        const response = await axios.patch(
+          `http://localhost:3000/users/${user._id}/stats`,
+          {
+            score: xp,
+            wins: wins,
+            losses: newLosses,
+          },
+          {
+            withCredentials: true,
+          }
+        );
+        const updatedUser = {
+          ...user,
+          losses: newLosses,
+          winLossRatio: response.data.winLossRatio,
+          gamesPlayed: response.data.gamesPlayed,
+        };
+        setUser(updatedUser);
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+      } catch (error) {
+        console.error("Error updating user stats:", error);
+      }
     }
 
     setIsBattleRunning(false);
@@ -174,7 +230,11 @@ const PokemonBattle = () => {
           winner={winner}
         />
       )}
-      {winner && <HighScore highScore={xp} />}
+      {winner && (
+        <div className="flex flex-col gap-2 justify-center items-center mt-8">
+          <h2>High Score: {xp}</h2>
+        </div>
+      )}
     </div>
   );
 };

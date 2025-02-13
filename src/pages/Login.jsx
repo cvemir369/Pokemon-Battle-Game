@@ -56,7 +56,7 @@ const Login = () => {
 
     try {
       const response = await authService.login(formData);
-      console.log("Login successful:", response);
+      // console.log("Login successful:", response);
       login(response.user); // Update the authentication state
       setUser(response.user); // Set the user object in context
       navigate("/"); // Redirect to the home page or any other page

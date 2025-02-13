@@ -81,7 +81,7 @@ const Header = () => {
                   alt="User Avatar"
                   className="h-10 w-10 rounded-full object-cover"
                 />
-                <span className="font-semibold">{user?.xp || 0} XP</span>
+                <span className="font-semibold">{user?.score || 0} XP</span>
               </div>
               <button
                 onClick={handleLogout}
