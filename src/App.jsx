@@ -16,6 +16,7 @@ import PokemonBattle from "./pages/PokemonBattle";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import VerifyUsersEmail from "./pages/VerifyUsersEmail";
+import UserProfile from "./pages/UserProfile";
 
 const AppContent = () => {
   const { isAuthenticated } = useAuth();
@@ -62,6 +63,10 @@ const AppContent = () => {
         <Route
           path="/leaderboard"
           element={isAuthenticated ? <Leaderboard /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/profile"
+          element={isAuthenticated ? <UserProfile /> : <Navigate to="/login" />}
         />
         <Route path="/verify/:token" element={<VerifyUsersEmail />} />
       </Routes>

@@ -77,11 +77,13 @@ const Header = () => {
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
                 <span className="font-semibold">{user?.score || 0} XP</span>
-                <img
-                  src={user?.image || "/pokeball.png"}
-                  alt="User Avatar"
-                  className="h-10 w-10 rounded-full object-cover"
-                />
+                <Link to="/profile">
+                  <img
+                    src={user?.image || "/default.jpg"}
+                    alt="User Avatar"
+                    className="h-10 w-10 rounded-full object-cover cursor-pointer hover:opacity-80 transition-opacity"
+                  />
+                </Link>
                 <span className="font-semibold">Hi, {user?.username}!</span>
               </div>
               <button
