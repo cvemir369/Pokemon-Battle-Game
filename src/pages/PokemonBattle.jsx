@@ -7,6 +7,7 @@ import BattleSimulator from "../components/BattleSimulator";
 import pokemonService from "../services/pokemonService";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import { toast } from "react-hot-toast";
 
 const PokemonBattle = () => {
   const [pokemonIds, setPokemonIds] = useState([]);
@@ -140,6 +141,10 @@ const PokemonBattle = () => {
       const newXp = xp + 10 + playerHp;
       setWins(newWins);
       setXp(newXp);
+      toast(`You won!`, {
+        icon: "👏",
+      });
+      toast.success(`+${playerHp + 10}HP`);
 
       // Save to backend and local storage
       try {
@@ -169,6 +174,9 @@ const PokemonBattle = () => {
     } else {
       const newLosses = losses + 1;
       setLosses(newLosses);
+      toast(`You lost!`, {
+        icon: "😢",
+      });
 
       // Save to backend and local storage
       try {

@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import pokemonService from "../services/pokemonService";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import { toast } from "react-hot-toast";
 
 const BASE_URL = "http://localhost:3000/users";
 
@@ -61,6 +62,7 @@ export default function PokemonRoster() {
       // Update the roster state
       const updatedRoster = roster.filter((pokemon) => pokemon.id !== id);
       setRoster(updatedRoster);
+      toast.error(`Pokemon removed from roster!`);
     } catch (error) {
       console.error(error.message);
     }
