@@ -17,35 +17,33 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   const updateUser = async (userData) => {
+    if (!userData || !userData._id) {
+      console.error("Invalid user data:", userData);
+      setIsAuthenticated(false);
+      setUser(null);
+      localStorage.removeItem("user");
+      return;
+    }
+
     try {
-      if (userData._id) {
-        // Fetch fresh user data after update
-        const freshUserData = await authService.getUser(userData._id);
-        setUser(freshUserData);
-        localStorage.setItem("user", JSON.stringify(freshUserData));
-        setIsAuthenticated(true);
-      } else {
-        setUser(userData);
-        localStorage.setItem("user", JSON.stringify(userData));
-        setIsAuthenticated(true);
-      }
+      const freshUserData = await authService.getUser(userData._id);
+      setUser(freshUserData);
+      localStorage.setItem("user", JSON.stringify(freshUserData));
+      setIsAuthenticated(true);
     } catch (error) {
       console.error("Update user error:", error);
-      // Optionally handle the error state
       setIsAuthenticated(false);
       setUser(null);
       localStorage.removeItem("user");
     }
   };
 
-  // Enhanced initialization
   useEffect(() => {
     const initializeAuth = async () => {
       try {
         const storedUser = localStorage.getItem("user");
         if (storedUser) {
           const parsedUser = JSON.parse(storedUser);
-          // Verify the stored user data with the server
           if (parsedUser._id) {
             const freshUserData = await authService.getUser(parsedUser._id);
             setUser(freshUserData);
@@ -67,10 +65,18 @@ export const AuthProvider = ({ children }) => {
     initializeAuth();
   }, []);
 
-  const login = (userData) => {
+  const login = async (userData) => {
+    if (!userData || !userData._id) {
+      console.error("Invalid user data:", userData);
+      setIsAuthenticated(false);
+      setUser(null);
+      return;
+    }
+
     try {
-      setUser(userData);
-      localStorage.setItem("user", JSON.stringify(userData));
+      const freshUserData = await authService.getUser(userData._id);
+      setUser(freshUserData);
+      localStorage.setItem("user", JSON.stringify(freshUserData));
       setIsAuthenticated(true);
     } catch (error) {
       console.error("Login error:", error);
