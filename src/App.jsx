@@ -16,19 +16,20 @@ import PokemonBattle from "./pages/PokemonBattle";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import VerifyUsersEmail from "./pages/VerifyUsersEmail";
+import UserProfile from "./pages/UserProfile";
 
 const AppContent = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
       <Header />
-
       <Routes>
-        <Route
-          path="/"
-          element={isAuthenticated ? <Home /> : <Navigate to="/login" />}
-        />
+        {/* Public routes */}
         <Route
           path="/login"
           element={isAuthenticated ? <Navigate to="/" /> : <Login />}
@@ -36,6 +37,13 @@ const AppContent = () => {
         <Route
           path="/signup"
           element={isAuthenticated ? <Navigate to="/" /> : <SignUp />}
+        />
+        <Route path="/verify/:token" element={<VerifyUsersEmail />} />
+
+        {/* Protected routes */}
+        <Route
+          path="/"
+          element={isAuthenticated ? <Home /> : <Navigate to="/login" />}
         />
         <Route
           path="/pokemon"
@@ -63,7 +71,13 @@ const AppContent = () => {
           path="/leaderboard"
           element={isAuthenticated ? <Leaderboard /> : <Navigate to="/login" />}
         />
-        <Route path="/verify/:token" element={<VerifyUsersEmail />} />
+        <Route
+          path="/profile"
+          element={isAuthenticated ? <UserProfile /> : <Navigate to="/login" />}
+        />
+
+        {/* Catch all route */}
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </>
   );
