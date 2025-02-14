@@ -147,18 +147,12 @@ const UserProfile = () => {
           <div className="bg-gray-50 p-4 rounded-none">
             <h2 className="text-xl font-semibold mb-2">Battle Statistics</h2>
             <p className="text-gray-700">Wins: {user?.wins || 0}</p>
-            <p className="text-gray-700">
-              Losses: {(user?.gamesPlayed || 0) - (user?.losses || 0)}
-            </p>
+            <p className="text-gray-700">Losses: {user?.losses || 0}</p>
             <p className="text-gray-700">
               Games Played: {user?.gamesPlayed || 0}
             </p>
             <p className="text-gray-700">
-              Win Rate:{" "}
-              {user?.gamesPlayed
-                ? ((user.wins / user.gamesPlayed) * 100).toFixed(1)
-                : 0}
-              %
+              Win Rate: {user?.gamesPlayed ? user?.winLossRatio : 0}%
             </p>
           </div>
         </div>
