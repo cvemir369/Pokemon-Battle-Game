@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import Header from "./components/Header";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { Toaster } from "react-hot-toast";
 
 import Home from "./pages/Home";
 import PokemonList from "./components/PokemonList";
@@ -86,6 +87,11 @@ const AppContent = () => {
 const App = () => {
   return (
     <AuthProvider>
+      <Toaster
+        toastOptions={{
+          duration: 4000,
+        }}
+      />
       <Router>
         <AppContent />
       </Router>

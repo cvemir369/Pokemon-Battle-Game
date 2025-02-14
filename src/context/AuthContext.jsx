@@ -16,41 +16,14 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const updateUser = async (userData) => {
-    if (!userData || !userData._id) {
-      console.error("Invalid user data:", userData);
-      setIsAuthenticated(false);
-      setUser(null);
-      localStorage.removeItem("user");
-      return;
-    }
-
-    try {
-      const freshUserData = await authService.getUser(userData._id);
-      setUser(freshUserData);
-      localStorage.setItem("user", JSON.stringify(freshUserData));
-      setIsAuthenticated(true);
-    } catch (error) {
-      console.error("Update user error:", error);
-      setIsAuthenticated(false);
-      setUser(null);
-      localStorage.removeItem("user");
-    }
-  };
-
   useEffect(() => {
     const initializeAuth = async () => {
       try {
         const storedUser = localStorage.getItem("user");
         if (storedUser) {
           const parsedUser = JSON.parse(storedUser);
-          if (parsedUser._id) {
-            const freshUserData = await authService.getUser(parsedUser._id);
-            setUser(freshUserData);
-            setIsAuthenticated(true);
-          } else {
-            throw new Error("Invalid user data");
-          }
+          setUser(parsedUser);
+          setIsAuthenticated(true);
         }
       } catch (error) {
         console.error("Auth initialization error:", error);
@@ -65,18 +38,10 @@ export const AuthProvider = ({ children }) => {
     initializeAuth();
   }, []);
 
-  const login = async (userData) => {
-    if (!userData || !userData._id) {
-      console.error("Invalid user data:", userData);
-      setIsAuthenticated(false);
-      setUser(null);
-      return;
-    }
-
+  const login = (userData) => {
     try {
-      const freshUserData = await authService.getUser(userData._id);
-      setUser(freshUserData);
-      localStorage.setItem("user", JSON.stringify(freshUserData));
+      setUser(userData);
+      localStorage.setItem("user", JSON.stringify(userData));
       setIsAuthenticated(true);
     } catch (error) {
       console.error("Login error:", error);
@@ -106,7 +71,7 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     user,
-    setUser: updateUser,
+    setUser,
     loading,
   };
 

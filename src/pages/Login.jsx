@@ -3,10 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import authService from "../services/authService";
 import axios from "axios";
+import { toast } from "react-hot-toast";
 
 const BASE_URL = "http://localhost:3000/users";
 
-const Login = () => {
+const Login = ({}) => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -17,8 +18,6 @@ const Login = () => {
 
   useEffect(() => {
     const checkSession = async () => {
-      if (!user) return; // Only check session if user is not null
-
       try {
         const response = await axios.get(
           `${BASE_URL}/check-session/${user._id}`,
@@ -28,6 +27,7 @@ const Login = () => {
         );
 
         if (response.data.authenticated) {
+          // setUser(response.data.user);
           navigate("/");
         } else {
           setUser(null);
@@ -36,9 +36,8 @@ const Login = () => {
         setUser(null);
       }
     };
-
     checkSession();
-  }, [user, navigate, setUser]);
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -58,9 +57,11 @@ const Login = () => {
 
     try {
       const response = await authService.login(formData);
+      // console.log("Login successful:", response);
       login(response.user); // Update the authentication state
       setUser(response.user); // Set the user object in context
       navigate("/"); // Redirect to the home page or any other page
+      toast.success(`Welcome back, ${response.user.username}!`);
     } catch (error) {
       console.error("Login error:", error);
       setError("Login failed. Please check your credentials and try again.");

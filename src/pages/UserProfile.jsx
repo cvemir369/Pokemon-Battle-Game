@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import authService from "../services/authService";
+import { toast } from "react-hot-toast";
 
 const UserProfile = () => {
   const { user, setUser } = useAuth();
@@ -42,6 +43,7 @@ const UserProfile = () => {
       const updatedUser = await authService.updateUser(user._id, updatedData);
       setUser(updatedUser);
       setIsEditing(false);
+      toast.success(`Profile updated!`);
     } catch (error) {
       setError(
         error.response?.data?.error ||
@@ -144,19 +146,13 @@ const UserProfile = () => {
           </div>
           <div className="bg-gray-50 p-4 rounded-none">
             <h2 className="text-xl font-semibold mb-2">Battle Statistics</h2>
-            <p className="text-gray-700">Wins: {user?.battlesWon || 0}</p>
+            <p className="text-gray-700">Wins: {user?.wins || 0}</p>
+            <p className="text-gray-700">Losses: {user?.losses || 0}</p>
             <p className="text-gray-700">
-              Losses: {(user?.totalBattles || 0) - (user?.battlesWon || 0)}
+              Games Played: {user?.gamesPlayed || 0}
             </p>
             <p className="text-gray-700">
-              Games Played: {user?.totalBattles || 0}
-            </p>
-            <p className="text-gray-700">
-              Win Rate:{" "}
-              {user?.totalBattles
-                ? ((user.battlesWon / user.totalBattles) * 100).toFixed(1)
-                : 0}
-              %
+              Win Rate: {user?.gamesPlayed ? user?.winLossRatio : 0}%
             </p>
           </div>
         </div>

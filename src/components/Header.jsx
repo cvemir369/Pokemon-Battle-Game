@@ -1,5 +1,6 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { toast } from "react-hot-toast";
 
 const Header = () => {
   const { isAuthenticated, logout, user } = useAuth();
@@ -12,6 +13,7 @@ const Header = () => {
       localStorage.removeItem("user");
       // Redirect to login page
       navigate("/login");
+      toast.success(`Good bye, see you soon!`);
     } catch (error) {
       console.error("Logout failed", error);
     }
