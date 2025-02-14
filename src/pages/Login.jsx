@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import authService from "../services/authService";
 import axios from "axios";
+import { toast } from "react-hot-toast";
 
 const BASE_URL = "http://localhost:3000/users";
 
@@ -61,6 +62,7 @@ const Login = () => {
       login(response.user); // Update the authentication state
       setUser(response.user); // Set the user object in context
       navigate("/"); // Redirect to the home page or any other page
+      toast.success(`Welcome back, ${response.user.username}!`);
     } catch (error) {
       console.error("Login error:", error);
       setError("Login failed. Please check your credentials and try again.");

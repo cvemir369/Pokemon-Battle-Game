@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import authService from "../services/authService";
+import { toast } from "react-hot-toast";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -36,8 +37,11 @@ const SignUp = () => {
         email,
         password,
       });
-      console.log("Sign up successful:", response);
+      // console.log("Sign up successful:", response);
       setSuccess("Sign up successful! Redirecting to login...");
+      toast.success(
+        `Sign up successful, ${username}! Please, verify your email now.`
+      );
       setFormData({
         username: "",
         email: "",

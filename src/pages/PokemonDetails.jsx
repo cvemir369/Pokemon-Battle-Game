@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import pokemonService from "../services/pokemonService";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import { toast } from "react-hot-toast";
 
 const BASE_URL = "http://localhost:3000/users";
 
@@ -58,6 +59,7 @@ export default function PokemonDetails() {
         JSON.stringify({ ...user, roster: [...user.roster, pokemon.id] })
       );
       setIsAdded(true);
+      toast.success(`${pokemon.name} added to roster!`);
     } catch (error) {
       setError(error.message);
     }
@@ -83,6 +85,7 @@ export default function PokemonDetails() {
         })
       );
       setIsAdded(false);
+      toast.error(`${pokemon.name} removed from roster!`);
     } catch (error) {
       setError(error.message);
     }
