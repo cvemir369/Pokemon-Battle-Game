@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import chooseRandomPokemon from "../utils/chooseRandomPokemon.js";
 import { calculateDamage } from "../utils/calculateDamage.js";
 import BattleRoster from "../components/BattleRoster";
@@ -20,6 +21,7 @@ const PokemonBattle = () => {
   const [wins, setWins] = useState(user?.wins || 0);
   const [losses, setLosses] = useState(user?.losses || 0);
   const [xp, setXp] = useState(user?.score || 0);
+  const navigate = useNavigate();
 
   // Fetch the user's roster from the local storage
   useEffect(() => {
