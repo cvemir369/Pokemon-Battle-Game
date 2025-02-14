@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import authService from "../services/authService";
+import { toast } from "react-hot-toast";
 
 const UserProfile = () => {
   const { user, setUser } = useAuth();
@@ -42,6 +43,7 @@ const UserProfile = () => {
       const updatedUser = await authService.updateUser(user._id, updatedData);
       setUser(updatedUser);
       setIsEditing(false);
+      toast.success(`Profile updated!`);
     } catch (error) {
       setError(
         error.response?.data?.error ||

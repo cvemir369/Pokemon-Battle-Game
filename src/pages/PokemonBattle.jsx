@@ -144,7 +144,9 @@ const PokemonBattle = () => {
       toast(`You won!`, {
         icon: "👏",
       });
-      toast.success(`+${playerHp + 10}HP`);
+      setTimeout(() => {
+        toast.success(`+${playerHp + 10}HP`);
+      }, 2000);
 
       // Save to backend and local storage
       try {
