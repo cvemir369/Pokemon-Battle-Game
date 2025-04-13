@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 
+const BASE_URL =
+  `${import.meta.env.VITE_BASE_URL}/leaderboard` ||
+  "http://localhost:3000/leaderboard";
+
 const Leaderboard = () => {
   const [scores, setScores] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,7 +16,7 @@ const Leaderboard = () => {
     const fetchScores = async () => {
       try {
         setLoading(true);
-        const response = await fetch("http://localhost:3000/leaderboard");
+        const response = await fetch(BASE_URL);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
