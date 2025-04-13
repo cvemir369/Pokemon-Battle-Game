@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const BASE_URL =
-  `${process.env.BASE_URL}/users` || "http://localhost:3000/users";
+  `${import.meta.env.VITE_BASE_URL}/users` || "http://localhost:3000/users";
 
 const authService = {
   signUp: async (userData) => {

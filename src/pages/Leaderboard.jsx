@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 
 const BASE_URL =
-  `${process.env.BASE_URL}/leaderboard` || "http://localhost:3000/leaderboard";
+  `${import.meta.env.VITE_BASE_URL}/leaderboard` ||
+  "http://localhost:3000/leaderboard";
 
 const Leaderboard = () => {
   const [scores, setScores] = useState([]);

@@ -16,7 +16,7 @@ const VerifyUsersEmail = () => {
     const verifyEmail = async () => {
       try {
         const response = await axios.post(
-          `${process.env.BASE_URL}/users/verify/${token}` ||
+          `${import.meta.env.VITE_BASE_URL}/users/verify/${token}` ||
             `http://localhost:3000/users/verify/${token}`
         );
         if (isMounted) {

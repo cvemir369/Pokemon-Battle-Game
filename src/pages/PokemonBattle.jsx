@@ -151,7 +151,7 @@ const PokemonBattle = () => {
       // Save to backend and local storage
       try {
         const response = await axios.patch(
-          `${process.env.BASE_URL}/users/${user._id}/stats` ||
+          `${import.meta.env.VITE_BASE_URL}/users/${user._id}/stats` ||
             `http://localhost:3000/users/${user._id}/stats`,
           {
             score: newXp,
@@ -184,7 +184,7 @@ const PokemonBattle = () => {
       // Save to backend and local storage
       try {
         const response = await axios.patch(
-          `${process.env.BASE_URL}/users/${user._id}/stats` ||
+          `${import.meta.env.VITE_BASE_URL}/users/${user._id}/stats` ||
             `http://localhost:3000/users/${user._id}/stats`,
           {
             score: xp,

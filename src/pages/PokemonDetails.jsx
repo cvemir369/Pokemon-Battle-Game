@@ -7,7 +7,7 @@ import { useAuth } from "../context/AuthContext";
 import { toast } from "react-hot-toast";
 
 const BASE_URL =
-  `${process.env.BASE_URL}/users` || "http://localhost:3000/users";
+  `${import.meta.env.VITE_BASE_URL}/users` || "http://localhost:3000/users";
 
 export default function PokemonDetails() {
   const { user, setUser, isAuthenticated } = useAuth(); // Get the authenticated user from context
