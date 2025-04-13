@@ -5,8 +5,7 @@ import authService from "../services/authService";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 
-const BASE_URL =
-  `${import.meta.env.VITE_BASE_URL}/users` || "http://localhost:3000/users";
+const BASE_URL = `${import.meta.env.VITE_BASE_URL}/users`;
 
 const Login = ({}) => {
   const [formData, setFormData] = useState({
