@@ -73,7 +73,7 @@ export default function PokemonRoster() {
       <div className="container mx-auto px-8 py-12">
         <button
           onClick={() => navigate(-1)}
-          className="mb-4 bg-black text-white py-2 px-4 rounded hover:bg-yellow-400 hover:text-black"
+          className="mb-4 bg-black text-white py-2 px-4 rounded hover:bg-yellow-400 hover:text-black hover:cursor-pointer"
         >
           &larr; Back
         </button>
@@ -100,7 +100,7 @@ export default function PokemonRoster() {
                 </span>
                 <button
                   onClick={() => removeFromRoster(pokemon.id)}
-                  className="mt-3 bg-red-500 text-white px-4 py-2 rounded-none hover:bg-red-600"
+                  className="mt-3 bg-red-500 text-white px-4 py-2 rounded-none hover:bg-red-600 hover:cursor-pointer"
                 >
                   Remove
                 </button>
@@ -108,14 +108,6 @@ export default function PokemonRoster() {
             ))}
           </ul>
         )}
-        {/* <div className="text-left mt-8">
-          <Link
-            to="/"
-            className="bg-transparent mt-8 cursor-pointer hover:text-white text-black font-semibold text-md"
-          >
-            &larr; Back to Home
-          </Link>
-        </div> */}
       </div>
     </section>
   );
