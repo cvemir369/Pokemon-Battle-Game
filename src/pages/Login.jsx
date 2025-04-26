@@ -4,10 +4,11 @@ import { useAuth } from "../context/AuthContext";
 import authService from "../services/authService";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import Loading from "../components/Loading";
 
 const BASE_URL = `${import.meta.env.VITE_BASE_URL}/users`;
 
-const Login = ({}) => {
+const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -15,9 +16,11 @@ const Login = ({}) => {
   const [error, setError] = useState("");
   const { login, user, setUser } = useAuth();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const checkSession = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(
           `${BASE_URL}/check-session/${user._id}`,
@@ -25,6 +28,7 @@ const Login = ({}) => {
             withCredentials: true,
           }
         );
+        setLoading(false);
 
         if (response.data.authenticated) {
           // setUser(response.data.user);
@@ -34,6 +38,7 @@ const Login = ({}) => {
         }
       } catch (error) {
         setUser(null);
+        setLoading(false);
       }
     };
     checkSession();
@@ -49,9 +54,11 @@ const Login = ({}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     if (!formData.email || !formData.password) {
       setError("Please enter your email and password.");
+      setLoading(false);
       return;
     }
 
@@ -61,12 +68,19 @@ const Login = ({}) => {
       login(response.user); // Update the authentication state
       setUser(response.user); // Set the user object in context
       navigate("/"); // Redirect to the home page or any other page
+      setLoading(false);
       toast.success(`Welcome back, ${response.user.username}!`);
     } catch (error) {
       console.error("Login error:", error);
       setError("Login failed. Please check your credentials and try again.");
+      setLoading(false);
+      toast.error("Login failed. Please check your credentials and try again.");
     }
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <section className="bg-yellow-400 min-h-screen mt-2 pt-8">
