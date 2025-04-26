@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import authService from "../services/authService";
 import { toast } from "react-hot-toast";
+import Loading from "../components/Loading";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ const SignUp = () => {
   });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -24,10 +26,12 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const { username, email, password, confirmPassword } = formData;
 
     if (password !== confirmPassword) {
       setError("Passwords do not match!");
+      setLoading(false);
       return;
     }
 
@@ -38,6 +42,7 @@ const SignUp = () => {
         password,
       });
       // console.log("Sign up successful:", response);
+      setLoading(false);
       setSuccess("Sign up successful! Redirecting to login...");
       toast.success(
         `Sign up successful, ${username}! Please, verify your email now.`
@@ -54,9 +59,15 @@ const SignUp = () => {
       }, 2000); // Redirect after 2 seconds
     } catch (error) {
       console.error("Sign up error:", error);
+      setLoading(false);
       setError("Sign up failed. Please try again.");
+      toast.error("Sign up failed. Please try again.");
     }
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <section className="bg-yellow-400 min-h-screen mt-2 pt-8">
