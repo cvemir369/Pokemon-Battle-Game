@@ -17,6 +17,13 @@ Pokémon: Battle Game (Web App) is an online battle simulator where players log 
 
 React ▫️ Express.js ▫️ Node.js ▫️ Pokedex API ▫️ JavaScript ▫️ HTML ▫️ Tailwind CSS
 
+##
+
+**Backend Repo:**
+[https://github.com/cvemir369/Pokemon-Battle-Game-BE](https://github.com/cvemir369/Pokemon-Battle-Game-BE)
+
+##
+
 ### After cloning do:
 
 ```
